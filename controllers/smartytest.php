@@ -5,9 +5,6 @@ class Smartytest extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        
-        // Load the Smarty Parser library. Usually you would autoload this library instead.
-        $this->load->library('smartyp');
     }
 
     public function index()
