@@ -15,8 +15,8 @@ class MY_Loader extends CI_Loader
     function view($view, $vars = array(), $return = FALSE)
     {
         $CI = & get_instance();                 // Get instance of the Codeigniter object
-        $CI->load->library('smartyp');          // Load our Smarty parser library
-        $CI->smartyp->_assign_variables($vars); // Assign variables to Smarty. 
+        $CI->load->library('smarty');          // Load our Smarty parser library
+        $CI->smarty->_assign_variables($vars); // Assign variables to Smarty. 
 
         // If no file extension dot has been found default to .php for view extensions
         if ( !stripos($view, '.') ) 
@@ -26,11 +26,11 @@ class MY_Loader extends CI_Loader
 
         if($return === TRUE)
         {
-            return $CI->smartyp->fetch($view);
+            return $CI->smarty->fetch($view);
         }
         else
         {
-            return $CI->smartyp->display($view);
+            return $CI->smarty->display($view);
         }
     }
     
