@@ -16,10 +16,10 @@ class CI_Smarty extends Smarty {
         
         $this->CI->load->config('smarty');
 
-        $this->template_dir = $this->config->item('template_directory');
-        $this->compile_dir  = $this->config->item('compile_directory');
-        $this->cache_dir    = $this->config->item('cache_directory');
-        $this->config_dir   = $this->config->item('config_directory'); 
+        $this->template_dir = $this->CI->config->item('template_directory');
+        $this->compile_dir  = $this->CI->config->item('compile_directory');
+        $this->cache_dir    = $this->CI->config->item('cache_directory');
+        $this->config_dir   = $this->CI->config->item('config_directory'); 
 
         // Add all helpers to plugins_dir
         $helpers = glob(APPPATH . 'helpers/*', GLOB_ONLYDIR | GLOB_MARK);
