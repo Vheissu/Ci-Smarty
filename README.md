@@ -6,4 +6,4 @@ Codeigniter's parser library is a bit limited and extremely basic, Smarty fills 
 
 ## It works with Phil Sturgeon's Template Library
 
-If you've used Phil's template library before you would know it gives you theming capabilities but it doesn't really work too well with view and parser extensions unless of course you're using Phil's Dwoo library, CI Smarty works with Phil's template library so you can have themes and view files using Smarty syntax which look a lot nicer.
+If you've used Phil's template library before (http://philsturgeon.co.uk/code/codeigniter-template) you would know it gives you theming capabilities but it doesn't really work too well with view and parser extensions unless of course you're using Phil's Dwoo library, CI Smarty works with Phil's template library so you can have themes and view files using Smarty syntax which look a lot nicer.
