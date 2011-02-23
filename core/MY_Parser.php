@@ -1,14 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class MY_Parser extends CI_Parser
-{
+class MY_Parser extends CI_Parser {
 
-    private $_ci;
+    protected $ci;
     
     public function __construct()
     {
-        $this->_ci =& get_instance();
-        $this->_ci->load->library('smarty');   
+        $this->ci =& get_instance();
+        $this->ci->load->library('smarty');   
     }
     
     /**
@@ -34,21 +33,21 @@ class MY_Parser extends CI_Parser
         }
         
         // Merge in any cached variables with our supplied variables
-        $data = array_merge($data, $this->_ci->load->_ci_cached_vars);
+        $data = array_merge($data, $this->ci->load->ci_cached_vars);
         
         // If we have variables to assign, lets assign them
         if ($data)
         {
-            $this->_ci->smarty->_assign_variables($data);
+            $this->ci->smarty->_assign_variables($data);
         }
         
         // Get our template data as a string
-        $template_string = $this->_ci->smarty->fetch($template);
+        $template_string = $this->ci->smarty->fetch($template);
         
         // If we're returning the templates contents, we're displaying the template
         if ($return == FALSE)
         {
-            $this->_ci->output->append_output($template_string);
+            $this->ci->output->append_output($template_string);
         }
         
         // We're returning the contents, fo'' shizzle
