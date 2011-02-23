@@ -4,10 +4,55 @@ class MY_Parser extends CI_Parser
 {
 
     private $_ci;
-    private $_smarty;
-    private $_parser_compile_dir = '';
-    private $_parser_cache_dir = '';
-    private $_parser_cache_time = 0;
-    private $_parser_assign_refs = array();
+    
+    public function __construct()
+    {
+        $this->_ci =& get_instance();
+        $this->_ci->load->library('smarty');   
+    }
+    
+    /**
+    * Parse a template using Smarty. Hows this for a Codeigniter
+    * core extension? Nice and simple.
+    * 
+    * @param mixed $template
+    * @param array $data
+    * @param mixed $return
+    */
+    public function parse($template, $data, $return = FALSE)
+    {
+        // Make sure we have a template, yo.
+        if ($template == '')
+        {
+            return FALSE;
+        }
+        
+        // If no file extension dot has been found default to .tpl for view extensions
+        if ( !stripos($template, '.') ) 
+        {
+            $template = $template.".tpl";
+        }
+        
+        // Merge in any cached variables with our supplied variables
+        $data = array_merge($data, $this->_ci->load->_ci_cached_vars);
+        
+        // If we have variables to assign, lets assign them
+        if ($data)
+        {
+            $this->_ci->smarty->_assign_variables($data);
+        }
+        
+        // Get our template data as a string
+        $template_string = $this->_ci->smarty->fetch($template);
+        
+        // If we're returning the templates contents, we're displaying the template
+        if ($return == FALSE)
+        {
+            $this->_ci->output->append_output($template_string);
+        }
+        
+        // We're returning the contents, fo'' shizzle
+        return $template_string;
+    }
 
 }
