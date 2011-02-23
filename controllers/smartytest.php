@@ -5,6 +5,9 @@ class Smartytest extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        
+        // Ideally you would autoload the parser
+        $this->load->library('parser');
     }
 
     public function index()
@@ -14,7 +17,7 @@ class Smartytest extends CI_Controller {
         $data['body']  = "This is body text to show that the Smarty Parser works!";
         
         // Load the template from the views directory
-        $this->load->view("smartytest", $data);
+        $this->parser->parse("smartytest.tpl", $data);
     }
     
     /**
@@ -28,7 +31,7 @@ class Smartytest extends CI_Controller {
         $data['body']  = "This is body text to show that Smarty 3 template inheritance works with Smarty Parser.";
         
         // Load the template from the views directory
-        $this->load->view("inheritancetest", $data);
+        $this->parser->parse("inheritancetest.tpl", $data);
         
     }
 
