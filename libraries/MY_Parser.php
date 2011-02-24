@@ -3,6 +3,7 @@
 class MY_Parser extends CI_Parser {
 
     protected $ci;
+    protected $theme_location;
     
     public function __construct()
     {
@@ -18,12 +19,19 @@ class MY_Parser extends CI_Parser {
     * @param array $data
     * @param mixed $return
     */
-    public function parse($template, $data, $return = FALSE)
+    public function parse($template, $data, $return = FALSE, $use_theme = FALSE)
     {
         // Make sure we have a template, yo.
         if ($template == '')
         {
             return FALSE;
+        }
+        
+        // If we want to get a certain template from another location
+        if ($use_theme != FALSE)
+        {
+            $this->ci->load->library('template');
+            $template = "file:/".$this->template->get_theme_path().$template."";
         }
         
         // If no file extension dot has been found default to .tpl for view extensions
@@ -52,6 +60,11 @@ class MY_Parser extends CI_Parser {
         
         // We're returning the contents, fo'' shizzle
         return $template_string;
+    }
+    
+    public function parse_string($template, $data, $return = FALSE, $use_theme = FALSE)
+    {
+        return $this->parse($template, $data, $return, $use_theme);
     }
 
 }
