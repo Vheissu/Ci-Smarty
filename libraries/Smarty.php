@@ -33,12 +33,16 @@ class CI_Smarty extends Smarty {
         // Completely experimental, not even sure this will work
         if ( method_exists( $this, 'assignByRef') )
         {
-            $ci =& get_instance();
             $this->assignByRef("this", $this->CI);
         }
 
     }
-
+    
+    /**
+    * Assigns a whole heap of variables to Smarty
+    * 
+    * @param mixed $variables
+    */
     public function _assign_variables($variables = array())
     {
         foreach ($variables as $name => $val)
