@@ -37,18 +37,5 @@ class CI_Smarty extends Smarty {
         }
 
     }
-    
-    /**
-    * Assigns a whole heap of variables to Smarty
-    * 
-    * @param mixed $variables
-    */
-    public function _assign_variables($variables = array())
-    {
-        foreach ($variables as $name => $val)
-        {
-            $this->assign($name, $val);
-        }
-    }
 
 }

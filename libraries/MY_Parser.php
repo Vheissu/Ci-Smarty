@@ -46,7 +46,10 @@ class MY_Parser extends CI_Parser {
         // If we have variables to assign, lets assign them
         if ($data)
         {
-            $this->ci->smarty->_assign_variables($data);
+            foreach ($data as $key => $val)
+            {
+                $this->smarty->assign($key, $val);
+            }
         }
         
         // Get our template data as a string
