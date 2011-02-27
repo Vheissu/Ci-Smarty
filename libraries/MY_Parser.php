@@ -48,7 +48,7 @@ class MY_Parser extends CI_Parser {
         {
             foreach ($data as $key => $val)
             {
-                $this->smarty->assign($key, $val);
+                $this->ci->smarty->assign($key, $val);
             }
         }
         
