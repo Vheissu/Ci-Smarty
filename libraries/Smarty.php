@@ -23,7 +23,7 @@ class CI_Smarty extends Smarty {
         $this->exception_handler = null;
 
         // Add all helpers to plugins_dir
-        $helpers = glob(APPPATH . 'helpers/*', GLOB_ONLYDIR | GLOB_MARK);
+        $helpers = glob(APPPATH . 'helpers/', GLOB_ONLYDIR | GLOB_MARK);
 
         foreach ($helpers as $helper)
         {
