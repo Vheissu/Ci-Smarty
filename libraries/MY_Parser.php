@@ -7,8 +7,22 @@ class MY_Parser extends CI_Parser {
     
     public function __construct()
     {
-        $this->ci =& get_instance();
-        $this->ci->load->library('smarty');   
+        $this->ci = get_instance();
+        $this->load->library('smarty');   
+    }
+    
+    /**
+    * This function lets us access Codeigniter instance objects like;
+    * helpers, libraries and core functions without having to prefix
+    * our faux Codeigniter instance variable 'CI' we can load Codeigniter
+    * libraries and other goodness like we would normally within controllers
+    * and other things.
+    * 
+    * @param mixed $bleh
+    */
+    public function __get($bleh)
+    {
+        return $this->CI->$bleh;
     }
     
     /**
@@ -30,7 +44,7 @@ class MY_Parser extends CI_Parser {
         // If we want to get a certain template from another location
         if ($use_theme != FALSE)
         {
-            $this->ci->load->library('template');
+            $this->load->library('template');
             $template = "file:/".$this->template->get_theme_path().$template."";
         }
         
@@ -41,24 +55,24 @@ class MY_Parser extends CI_Parser {
         }
         
         // Merge in any cached variables with our supplied variables
-        $data = array_merge($data, $this->ci->load->_ci_cached_vars);
+        $data = array_merge($data, $this->load->_ci_cached_vars);
         
         // If we have variables to assign, lets assign them
         if ($data)
         {
             foreach ($data as $key => $val)
             {
-                $this->ci->smarty->assign($key, $val);
+                $this->smarty->assign($key, $val);
             }
         }
         
         // Get our template data as a string
-        $template_string = $this->ci->smarty->fetch($template);
+        $template_string = $this->smarty->fetch($template);
         
         // If we're returning the templates contents, we're displaying the template
         if ($return == FALSE)
         {
-            $this->ci->output->append_output($template_string);
+            $this->output->append_output($template_string);
         }
         
         // We're returning the contents, fo'' shizzle

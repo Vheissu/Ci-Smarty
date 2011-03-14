@@ -12,7 +12,7 @@ class CI_Smarty extends Smarty {
         parent::__construct();
 
         // Store the Codeigniter super global instance... whatever
-        $this->CI =& get_instance();
+        $this->CI = get_instance();
 
         $this->CI->load->config('smarty');
 
