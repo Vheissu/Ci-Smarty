@@ -2,12 +2,12 @@
 
 class MY_Parser extends CI_Parser {
 
-    protected $ci;
+    protected $CI;
     protected $theme_location;
     
     public function __construct()
     {
-        $this->ci = get_instance();
+        $this->CI = get_instance();
         $this->load->library('smarty');   
     }
     
@@ -33,7 +33,7 @@ class MY_Parser extends CI_Parser {
     * @param array $data
     * @param mixed $return
     */
-    public function parse($template, $data, $return = FALSE, $use_theme = FALSE)
+    public function parse($template, $data = '', $return = FALSE, $use_theme = FALSE)
     {
         // Make sure we have a template, yo.
         if ($template == '')
@@ -79,7 +79,7 @@ class MY_Parser extends CI_Parser {
         return $template_string;
     }
     
-    public function parse_string($template, $data, $return = FALSE, $use_theme = FALSE)
+    public function parse_string($template, $data = '', $return = FALSE, $use_theme = FALSE)
     {
         return $this->parse($template, $data, $return, $use_theme);
     }
