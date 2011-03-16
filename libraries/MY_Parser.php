@@ -33,31 +33,26 @@ class MY_Parser extends CI_Parser {
     * @param array $data
     * @param mixed $return
     */
-    public function parse($template, $data = '', $return = FALSE, $use_theme = FALSE)
+    public function parse($template, $data = '', $return = false, $use_theme = false)
     {
-        // Make sure we have a template, yo.
         if ($template == '')
         {
             return FALSE;
         }
         
-        // If we want to get a certain template from another location
-        if ($use_theme != FALSE)
+        if ($use_theme !== false)
         {
             $this->load->library('template');
             $template = "file:/".$this->template->get_theme_path().$template."";
         }
         
-        // If no file extension dot has been found default to .tpl for view extensions
         if ( !stripos($template, '.') ) 
         {
             $template = $template.".tpl";
         }
         
-        // Merge in any cached variables with our supplied variables
         $data = array_merge($data, $this->load->_ci_cached_vars);
         
-        // If we have variables to assign, lets assign them
         if ($data)
         {
             foreach ($data as $key => $val)
@@ -66,20 +61,17 @@ class MY_Parser extends CI_Parser {
             }
         }
         
-        // Get our template data as a string
         $template_string = $this->smarty->fetch($template);
         
-        // If we're returning the templates contents, we're displaying the template
         if ($return == FALSE)
         {
             $this->output->append_output($template_string);
         }
         
-        // We're returning the contents, fo'' shizzle
         return $template_string;
     }
     
-    public function parse_string($template, $data = '', $return = FALSE, $use_theme = FALSE)
+    public function parse_string($template, $data = '', $return = false, $use_theme = FALSE)
     {
         return $this->parse($template, $data, $return, $use_theme);
     }
