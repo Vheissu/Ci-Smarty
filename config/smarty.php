@@ -1,13 +1,16 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // Your views directory with a trailing slash
-$config['template_directory'] = APPPATH."views/";
+$config['template_directory']   = APPPATH."views/";
 
 // Where templates are compiled
-$config['compile_directory']  = BASEPATH."cache/smarty/compiled";
+$config['compile_directory']    = BASEPATH."cache/smarty/compiled";
 
 // Where templates are cached
-$config['cache_directory']    = APPPATH."cache/smarty/cached";
+$config['cache_directory']      = APPPATH."cache/smarty/cached";
 
 // Where Smarty configs are located
-$config['config_directory']   = APPPATH."third_party/Smarty/configs";
+$config['config_directory']     = APPPATH."third_party/Smarty/configs";
+
+// Default extension of templates if one isn't supplied
+$config['template_ext']         = 'php';
