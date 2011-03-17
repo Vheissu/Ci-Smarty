@@ -30,12 +30,9 @@ class CI_Smarty extends Smarty {
         {
             $this->plugins_dir[] = $helper;
         }
-
-        // Completely experimental, not even sure this will work
-        if ( method_exists( $this, 'assignByRef') )
-        {
-            $this->assignByRef("this", $this->CI);
-        }
+        
+        // Should let us access Codeigniter stuff in views
+        $this->assign("this", $this->CI);
 
     }
 
