@@ -4,7 +4,7 @@
 $config['template_directory']   = APPPATH."views/";
 
 // Where templates are compiled
-$config['compile_directory']    = BASEPATH."cache/smarty/compiled";
+$config['compile_directory']    = APPPATH."cache/smarty/compiled";
 
 // Where templates are cached
 $config['cache_directory']      = APPPATH."cache/smarty/cached";
