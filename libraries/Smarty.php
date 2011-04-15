@@ -39,5 +39,15 @@ class CI_Smarty extends Smarty {
         $this->assign("this", $this->CI);
 
     }
+    
+    /**
+     * Smarty resource accessor functions
+     */
+    public function ci_get_template ($tpl_name, &$tpl_source, &$smarty_obj)
+    {
+        // ask CI to fetch our template
+        $tpl_source = $this->CI->load->view($tpl_name, $smarty_obj->get_template_vars(), true);
+        return true;
+    }
 
 }

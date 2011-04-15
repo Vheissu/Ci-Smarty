@@ -8,21 +8,7 @@ class MY_Parser extends CI_Parser {
     public function __construct()
     {
         $this->CI = get_instance();
-        $this->load->library('smarty');   
-    }
-    
-    /**
-    * This function lets us access Codeigniter instance objects like;
-    * helpers, libraries and core functions without having to prefix
-    * our faux Codeigniter instance variable 'CI' we can load Codeigniter
-    * libraries and other goodness like we would normally within controllers
-    * and other things.
-    * 
-    * @param mixed $bleh
-    */
-    public function __get($bleh)
-    {
-        return $this->CI->$bleh;
+        $this->CI->load->library('smarty');   
     }
     
     /**
@@ -41,49 +27,48 @@ class MY_Parser extends CI_Parser {
             return FALSE;
         }
         
-        // If we want to get a certain template from another location
-        if ($use_theme != FALSE)
-        {
-            $this->load->library('template');
-            $template = "file:/".$this->template->get_theme_path().$template."";
-        }
-        
         // If no file extension dot has been found default to .php for view extensions
         if ( !stripos($template, '.') ) 
         {
-            $template = $template.".".$this->smarty->template_ext;
+            $template = $template.".".$this->CI->smarty->template_ext;
         }
         
         // Merge in any cached variables with our supplied variables
         if (is_array($data))
         {
-            $data = array_merge($data, $this->load->_ci_cached_vars);
+            $data = array_merge($data, $this->CI->load->_ci_cached_vars);
         }
+        
         // If we have variables to assign, lets assign them
         if ($data)
         {
             foreach ($data as $key => $val)
             {
-                $this->smarty->assign($key, $val);
+                $this->CI->smarty->assign($key, $val);
             }
         }
         
         // Get our template data as a string
-        $template_string = $this->smarty->fetch($template);
+        $template_string = $this->CI->smarty->fetch($template);
         
         // If we're returning the templates contents, we're displaying the template
         if ($return == FALSE)
         {
-            $this->output->append_output($template_string);
+            $this->CI->output->append_output($template_string);
         }
         
         // We're returning the contents, fo'' shizzle
         return $template_string;
     }
     
-    public function parse_string($template, $data = '', $return = FALSE, $use_theme = FALSE)
+    function string_parse($template, $data, $return = FALSE, $is_include = FALSE)
     {
-        return $this->parse($template, $data, $return, $use_theme);
+        return $this->CI->smarty->fetch('string:'.$template, $data);
+    }
+
+    function parse_string($template, $data, $return = FALSE, $is_include = false)
+    {
+        return $this->CI->smarty->fetch('string:'.$template, $data);
     }
 
 }
