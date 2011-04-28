@@ -25,7 +25,7 @@ class CI_Smarty extends Smarty {
         
         // Only show serious errors. Without this if you try and use variables that
         // do not exist, Smarty will throw variable does not exist errors
-        $this->error_reporting   = "E_ERROR";
+        $this->error_reporting   = $this->CI->config->item('error_reporting');
 
         // Add all helpers to plugins_dir
         $helpers = glob(APPPATH . 'helpers/', GLOB_ONLYDIR | GLOB_MARK);

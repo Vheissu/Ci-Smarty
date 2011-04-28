@@ -14,3 +14,6 @@ $config['config_directory']     = APPPATH."third_party/Smarty/configs";
 
 // Default extension of templates if one isn't supplied
 $config['template_ext']         = 'php';
+
+// PHP error reporting level (can be any valid error reporting level)
+$config['error_reporting'] = "E_ERROR";
