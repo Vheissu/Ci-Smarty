@@ -33,12 +33,6 @@ class MY_Parser extends CI_Parser {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
         
-        // Merge in any cached variables with our supplied variables
-        if (is_array($data))
-        {
-            $data = array_merge($data, $this->CI->load->_ci_cached_vars);
-        }
-        
         // If we have variables to assign, lets assign them
         if ($data)
         {
