@@ -1,5 +1,15 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+* @name CI Smarty
+* @copyright Dwayne Charrington, 2011.
+* @author Dwayne Charrington and other Github contributors
+* @license (DWYWALAYAM) 
+           Do What You Want As Long As You Attribute Me Licence
+* @version 1.2
+* @link http://ilikekillnerds.com
+*/
+
 class MY_Parser extends CI_Parser {
 
     protected $CI;
@@ -12,12 +22,13 @@ class MY_Parser extends CI_Parser {
     }
     
     /**
-    * Parse a template using Smarty. Hows this for a Codeigniter
-    * core extension? Nice and simple.
+    * Parse
+    * Parses a template using Smarty 3 engine
     * 
     * @param mixed $template
-    * @param array $data
+    * @param mixed $data
     * @param mixed $return
+    * @param mixed $use_theme
     */
     public function parse($template, $data = '', $return = FALSE, $use_theme = FALSE)
     {
@@ -55,11 +66,30 @@ class MY_Parser extends CI_Parser {
         return $template_string;
     }
     
+    /**
+    * String Parse
+    * Parses a string using Smarty 3
+    * 
+    * @param mixed $template
+    * @param mixed $data
+    * @param mixed $return
+    * @param mixed $is_include
+    */
     function string_parse($template, $data, $return = FALSE, $is_include = FALSE)
     {
         return $this->CI->smarty->fetch('string:'.$template, $data);
     }
-
+    
+    /**
+    * Parse String
+    * Parses a string using Smarty 3. Never understood why there
+    * was two identical functions in Codeigniter that did the same.
+    * 
+    * @param mixed $template
+    * @param mixed $data
+    * @param mixed $return
+    * @param mixed $is_include
+    */
     function parse_string($template, $data, $return = FALSE, $is_include = false)
     {
         return $this->CI->smarty->fetch('string:'.$template, $data);
