@@ -25,15 +25,15 @@ class MY_Parser extends CI_Parser {
     * Parse
     * Parses a template using Smarty 3 engine
     * 
-    * @param mixed $template
-    * @param mixed $data
-    * @param mixed $return
+    * @param string $template
+    * @param array $data
+    * @param boolean $return
     * @param mixed $use_theme
     */
-    public function parse($template, $data = '', $return = FALSE, $use_theme = FALSE)
+    public function parse($template, $data = array(), $return = FALSE, $use_theme = FALSE)
     {
         // Make sure we have a template, yo.
-        if ($template == '')
+        if (empty($template))
         {
             return FALSE;
         }
@@ -44,8 +44,12 @@ class MY_Parser extends CI_Parser {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
         
+        //merge the data array with global cached vars
+        
+        $data = array_merge($data, $this->load->_ci_cached_vars)
+        
         // If we have variables to assign, lets assign them
-        if ($data)
+        if (!empty($data))
         {
             foreach ($data as $key => $val)
             {
@@ -70,12 +74,12 @@ class MY_Parser extends CI_Parser {
     * String Parse
     * Parses a string using Smarty 3
     * 
-    * @param mixed $template
-    * @param mixed $data
-    * @param mixed $return
+    * @param string $template
+    * @param array $data
+    * @param boolean $return
     * @param mixed $is_include
     */
-    function string_parse($template, $data, $return = FALSE, $is_include = FALSE)
+    function string_parse($template, $data = array(), $return = FALSE, $is_include = FALSE)
     {
         return $this->CI->smarty->fetch('string:'.$template, $data);
     }
@@ -85,12 +89,12 @@ class MY_Parser extends CI_Parser {
     * Parses a string using Smarty 3. Never understood why there
     * was two identical functions in Codeigniter that did the same.
     * 
-    * @param mixed $template
-    * @param mixed $data
-    * @param mixed $return
+    * @param string $template
+    * @param array $data
+    * @param boolean $return
     * @param mixed $is_include
     */
-    function parse_string($template, $data, $return = FALSE, $is_include = false)
+    function parse_string($template, $data = array(), $return = FALSE, $is_include = false)
     {
         return $this->CI->smarty->fetch('string:'.$template, $data);
     }
