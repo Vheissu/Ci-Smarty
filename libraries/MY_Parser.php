@@ -46,7 +46,7 @@ class MY_Parser extends CI_Parser {
         
         //merge the data array with global cached vars
         
-        $data = array_merge($data, $this->load->_ci_cached_vars)
+        $data = array_merge($data, $this->load->_ci_cached_vars);
         
         // If we have variables to assign, lets assign them
         if (!empty($data))
