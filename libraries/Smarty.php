@@ -29,10 +29,6 @@ class CI_Smarty extends Smarty {
         $this->config_dir        = config_item('config_directory');
         $this->template_ext      = config_item('template_ext');
         $this->exception_handler = null;
-        
-        // Only show serious errors. Without this if you try and use variables that
-        // do not exist, Smarty will throw variable does not exist errors
-        $this->error_reporting   = config_item('error_reporting');
 
         // Add all helpers to plugins_dir
         $helpers = glob(APPPATH . 'helpers/', GLOB_ONLYDIR | GLOB_MARK);

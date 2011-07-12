@@ -57,6 +57,9 @@ class MY_Parser extends CI_Parser {
             }
         }
         
+        // Set error reporting level
+        $this->CI->smarty->error_reporting = error_reporting();
+        
         // Get our template data as a string
         $template_string = $this->CI->smarty->fetch($template);
         
@@ -66,7 +69,7 @@ class MY_Parser extends CI_Parser {
             $this->CI->output->append_output($template_string);
         }
         
-        // We're returning the contents, fo'' shizzle
+        // We're returning the contents, fo' shizzle
         return $template_string;
     }
     
@@ -96,7 +99,7 @@ class MY_Parser extends CI_Parser {
     */
     function parse_string($template, $data = array(), $return = FALSE, $is_include = false)
     {
-        return $this->CI->smarty->fetch('string:'.$template, $data);
+        return $this->string_parse($template, $data, $return, $is_include);
     }
 
 }
