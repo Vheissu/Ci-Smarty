@@ -38,7 +38,7 @@ class MY_Parser extends CI_Parser {
             return FALSE;
         }
         
-        // If no file extension dot has been found default to .php for view extensions
+        // If no file extension dot has been found default to defined extension for view extensions
         if ( !stripos($template, '.') ) 
         {
             $template = $template.".".$this->CI->smarty->template_ext;
