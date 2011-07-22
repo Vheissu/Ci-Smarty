@@ -28,6 +28,7 @@ class CI_Smarty extends Smarty {
         $this->cache_dir         = config_item('cache_directory');
         $this->config_dir        = config_item('config_directory');
         $this->template_ext      = config_item('template_ext');
+        $this->error_reporting   = config_item('template_error_reporting');
         $this->exception_handler = null;
 
         // Add all helpers to plugins_dir
