@@ -57,9 +57,6 @@ class MY_Parser extends CI_Parser {
             }
         }
         
-        // Set error reporting level
-        $this->CI->smarty->error_reporting = error_reporting();
-        
         // Get our template data as a string
         $template_string = $this->CI->smarty->fetch($template);
         
