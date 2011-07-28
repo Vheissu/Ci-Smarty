@@ -13,6 +13,12 @@
 // Your views directory with a trailing slash
 $config['template_directory']   = APPPATH."views/";
 
+// Smarty caching enabled by default unless explicitly set to 0
+$config['cache_status']         = 1;
+
+// Cache lifetime. Default value is 3600 seconds (1 hour) Smarty's default value
+$config['cache_lifetime']       = 3600;
+
 // Where templates are compiled
 $config['compile_directory']    = APPPATH."cache/smarty/compiled";
 

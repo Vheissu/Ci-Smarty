@@ -30,7 +30,7 @@ class MY_Parser extends CI_Parser {
     * @param boolean $return
     * @param mixed $caching
     */
-    public function parse($template, $data = array(), $return = FALSE, $caching = FALSE)
+    public function parse($template, $data = array(), $return = FALSE, $caching = TRUE)
     {
         // Make sure we have a template, yo.
         if (empty($template))
