@@ -44,7 +44,7 @@ class MY_Parser extends CI_Parser {
             $this->CI->smarty->disable_caching();
         }
         
-        // If no file extension dot has been found default to .php for view extensions
+        // If no file extension dot has been found default to defined extension for view extensions
         if ( !stripos($template, '.') ) 
         {
             $template = $template.".".$this->CI->smarty->template_ext;
@@ -72,7 +72,7 @@ class MY_Parser extends CI_Parser {
             $this->CI->output->append_output($template_string);
         }
         
-        // We're returning the contents, fo'' shizzle
+        // We're returning the contents, fo' shizzle
         return $template_string;
     }
     
@@ -102,7 +102,7 @@ class MY_Parser extends CI_Parser {
     */
     function parse_string($template, $data = array(), $return = FALSE, $is_include = false)
     {
-        return $this->CI->smarty->fetch('string:'.$template, $data);
+        return $this->string_parse($template, $data, $return, $is_include);
     }
 
 }

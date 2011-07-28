@@ -41,11 +41,9 @@ class CI_Smarty extends Smarty {
             $this->disable_caching();
         }
         
+        $this->error_reporting   = config_item('template_error_reporting');
+
         $this->exception_handler = null;
-        
-        // Only show serious errors. Without this if you try and use variables that
-        // do not exist, Smarty will throw variable does not exist errors
-        $this->error_reporting   = config_item('error_reporting');
 
         // Add all helpers to plugins_dir
         $helpers = glob(APPPATH . 'helpers/', GLOB_ONLYDIR | GLOB_MARK);
