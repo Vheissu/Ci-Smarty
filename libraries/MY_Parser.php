@@ -28,14 +28,20 @@ class MY_Parser extends CI_Parser {
     * @param string $template
     * @param array $data
     * @param boolean $return
-    * @param mixed $use_theme
+    * @param mixed $caching
     */
-    public function parse($template, $data = array(), $return = FALSE, $use_theme = FALSE)
+    public function parse($template, $data = array(), $return = FALSE, $caching = FALSE)
     {
         // Make sure we have a template, yo.
         if (empty($template))
         {
             return FALSE;
+        }
+        
+        // If we don't want caching, disable it
+        if ($caching === FALSE)
+        {
+            $this->CI->smarty->disable_caching();
         }
         
         // If no file extension dot has been found default to .php for view extensions

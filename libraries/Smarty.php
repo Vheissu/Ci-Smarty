@@ -45,5 +45,17 @@ class CI_Smarty extends Smarty {
         // Should let us access Codeigniter stuff in views
         $this->assign("this", $CI);
     }
+    
+    /**
+    * Disable Caching
+    * Allows you to disable caching on a page by page basis
+    * @example $this->smarty->disable_caching(); then do your parse call
+    * 
+    */
+    public function disable_caching()
+    {
+        $this->force_compile = true;
+        $this->caching       = false; 
+    }
 
 }
