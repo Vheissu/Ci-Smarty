@@ -10,7 +10,7 @@
 * @link http://ilikekillnerds.com
 */
 
-class MY_Parser extends CI_Parser {
+class MY_Parser extends CI_Loader {
 
     protected $CI;
     protected $theme_location;
