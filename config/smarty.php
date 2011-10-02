@@ -11,7 +11,7 @@
 */
 
 // Your views directory with a trailing slash
-$config['template_directory']   = APPPATH."views/";
+$config['template_directory']   = array(APPPATH."views/");
 
 // Smarty caching enabled by default unless explicitly set to 0
 $config['cache_status']         = 1;

@@ -13,6 +13,8 @@
 require_once APPPATH."third_party/Smarty/Smarty.class.php";
 
 class CI_Smarty extends Smarty {
+    
+    public $template_ext = '.php';
 
     public function __construct()
     {
@@ -31,6 +33,8 @@ class CI_Smarty extends Smarty {
         
         $this->cache_lifetime    = config_item('cache_lifetime');
         
+        $this->disableSecurity();
+        
         // If caching is enabled, then disable force compile and enable cache
         if (config_item('cache_status') === TRUE)
         {
@@ -42,8 +46,6 @@ class CI_Smarty extends Smarty {
         }
         
         $this->error_reporting   = config_item('template_error_reporting');
-
-        $this->exception_handler = null;
 
         // Add all helpers to plugins_dir
         $helpers = glob(APPPATH . 'helpers/', GLOB_ONLYDIR | GLOB_MARK);
