@@ -15,10 +15,19 @@ class MY_Parser extends CI_Loader {
     protected $CI;
     protected $theme_location;
     
+    private $_module = '';
+    
     public function __construct()
     {
         $this->CI = get_instance();
-        $this->CI->load->library('smarty');   
+        $this->CI->load->library('smarty');
+        
+        // Modular Separation / Modular Extensions has been detected
+        if ( method_exists( $this->CI->router, 'fetch_module' ) )
+        {
+            $this->_module = $this->CI->router->fetch_module();
+        }
+           
     }
     
     /**
@@ -50,9 +59,10 @@ class MY_Parser extends CI_Loader {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
         
-        //merge the data array with global cached vars
-        
-        //$data = array_merge($data, $this->CI->load->_ci_cached_vars);
+        if ( !empty($this->_module) )
+        {
+            $template = APPPATH . 'modules/' . $this->_module . '/views/' . $template;
+        }
         
         // If we have variables to assign, lets assign them
         if (!empty($data))
