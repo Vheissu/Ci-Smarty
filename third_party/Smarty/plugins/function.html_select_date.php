@@ -55,7 +55,9 @@ function smarty_function_html_select_date($params, $template)
 {
     // generate timestamps used for month names only
     static $_month_timestamps = null;
+    static $_current_year = null;
     if ($_month_timestamps === null) {
+        $_current_year = date('Y');
         $_month_timestamps = array();
         for ($i = 1; $i <= 12; $i++) {
             $_month_timestamps[$i] = mktime(0, 0, 0, $i, 1, 2000);
@@ -114,7 +116,7 @@ function smarty_function_html_select_date($params, $template)
     foreach ($params as $_key => $_value) {
         switch ($_key) {
             case 'time':
-                if (!is_array($_value)) {
+                if (!is_array($_value) && $_value !== null) {
                     $time = smarty_make_timestamp($_value);
                 }
                 break;
@@ -200,7 +202,11 @@ function smarty_function_html_select_date($params, $template)
             list($_year, $_month, $_day) = $time = explode('-', date('Y-m-d'));
         }
     } elseif ($time === null) {
-        list($_year, $_month, $_day) = $time = explode('-', date('Y-m-d'));
+        if (array_key_exists('time', $params)) {
+            $_year = $_month = $_day = $time = null;
+        } else {
+            list($_year, $_month, $_day) = $time = explode('-', date('Y-m-d'));
+        }
     } else {
         list($_year, $_month, $_day) = $time = explode('-', date('Y-m-d', $time));
     }
@@ -211,11 +217,11 @@ function smarty_function_html_select_date($params, $template)
         $key .= '_year';
         $t = $$key;
         if ($t === null) {
-            $$key = (int)$_year;
+            $$key = (int)$_current_year;
         } else if ($t[0] == '+') {
-            $$key = (int)($_year + trim(substr($t, 1)));
+            $$key = (int)($_current_year + trim(substr($t, 1)));
         } else if ($t[0] == '-') {
-            $$key = (int)($_year - trim(substr($t, 1)));
+            $$key = (int)($_current_year - trim(substr($t, 1)));
         } else {
             $$key = (int)$$key;
         }

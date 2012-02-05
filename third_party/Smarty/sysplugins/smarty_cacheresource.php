@@ -18,14 +18,14 @@ abstract class Smarty_CacheResource {
     * cache for Smarty_CacheResource instances
     * @var array
     */
-    protected static $resources = array();
+    public static $resources = array();
 
     /**
     * resource types provided by the core
     * @var array
     */
     protected static $sysplugins = array(
-    'file' => true,
+        'file' => true,
     );
 
     /**
@@ -148,24 +148,32 @@ abstract class Smarty_CacheResource {
         if (!isset($type)) {
             $type = $smarty->caching_type;
         }
-        // try the instance cache
-        if (isset(self::$resources[$type])) {
-            return self::$resources[$type];
+
+        // try smarty's cache
+        if (isset($smarty->_cacheresource_handlers[$type])) {
+            return $smarty->_cacheresource_handlers[$type];
         }
+        
         // try registered resource
         if (isset($smarty->registered_cache_resources[$type])) {
             // do not cache these instances as they may vary from instance to instance
-            return $smarty->registered_cache_resources[$type];
+            return $smarty->_cacheresource_handlers[$type] = $smarty->registered_cache_resources[$type];
         }
         // try sysplugins dir
         if (isset(self::$sysplugins[$type])) {
-            $cache_resource_class = 'Smarty_Internal_CacheResource_' . ucfirst($type);
-            return self::$resources[$type] = new $cache_resource_class();
+            if (!isset(self::$resources[$type])) {
+                $cache_resource_class = 'Smarty_Internal_CacheResource_' . ucfirst($type);
+                self::$resources[$type] = new $cache_resource_class();
+            }
+            return $smarty->_cacheresource_handlers[$type] = self::$resources[$type];
         }
         // try plugins dir
         $cache_resource_class = 'Smarty_CacheResource_' . ucfirst($type);
         if ($smarty->loadPlugin($cache_resource_class)) {
-            return self::$resources[$type] = new $cache_resource_class();
+            if (!isset(self::$resources[$type])) {
+                self::$resources[$type] = new $cache_resource_class();
+            }
+            return $smarty->_cacheresource_handlers[$type] = self::$resources[$type];
         }
         // give up
         throw new SmartyException("Unable to load cache resource '{$type}'");
@@ -291,6 +299,7 @@ class Smarty_Template_Cached {
         //    check if cache is valid
         //
         if (!($_template->caching == Smarty::CACHING_LIFETIME_CURRENT || $_template->caching == Smarty::CACHING_LIFETIME_SAVED) || $_template->source->recompiled) {
+            $handler->populate($this, $_template);
             return;
         }
         while (true) {

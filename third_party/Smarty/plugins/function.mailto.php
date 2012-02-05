@@ -50,6 +50,7 @@
  */
 function smarty_function_mailto($params, $template)
 {
+    static $_allowed_encoding = array('javascript' => true, 'javascript_charcode' => true, 'hex' => true, 'none' => true);
     $extra = '';
 
     if (empty($params['address'])) {
@@ -87,15 +88,12 @@ function smarty_function_mailto($params, $template)
         }
     }
 
-    $mail_parm_vals = '';
-    for ($i = 0, $_length = count($mail_parms); $i < $_length; $i++) {
-        $mail_parm_vals .= (0 == $i) ? '?' : '&';
-        $mail_parm_vals .= $mail_parms[$i];
+    if ($mail_parms) {
+        $address .= '?' . join('&', $mail_parms);
     }
-    $address .= $mail_parm_vals;
-
+    
     $encode = (empty($params['encode'])) ? 'none' : $params['encode'];
-    if (!in_array($encode, array('javascript', 'javascript_charcode', 'hex', 'none'))) {
+    if (!isset($_allowed_encoding[$encode])) {
         trigger_error("mailto: 'encode' parameter must be none, javascript, javascript_charcode or hex", E_USER_WARNING);
         return;
     }
@@ -116,14 +114,12 @@ function smarty_function_mailto($params, $template)
             $ord[] = ord($string[$x]);
         }
 
-        $_ret = "<script type=\"text/javascript\" language=\"javascript\">\n";
-        $_ret .= "<!--\n";
-        $_ret .= "{document.write(String.fromCharCode(";
-        $_ret .= implode(',', $ord);
-        $_ret .= "))";
-        $_ret .= "}\n";
-        $_ret .= "//-->\n";
-        $_ret .= "</script>\n";
+        $_ret = "<script type=\"text/javascript\" language=\"javascript\">\n"
+            . "{document.write(String.fromCharCode("
+            . implode(',', $ord)
+            . "))"
+            . "}\n"
+            . "</script>\n";
 
         return $_ret;
     } elseif ($encode == 'hex') {
@@ -134,7 +130,7 @@ function smarty_function_mailto($params, $template)
         }
         $address_encode = '';
         for ($x = 0, $_length = strlen($address); $x < $_length; $x++) {
-            if (preg_match('!\w!u', $address[$x])) {
+            if (preg_match('!\w!' . Smarty::$_UTF8_MODIFIER, $address[$x])) {
                 $address_encode .= '%' . bin2hex($address[$x]);
             } else {
                 $address_encode .= $address[$x];
