@@ -2,11 +2,11 @@
 
 /**
 * @name CI Smarty
-* @copyright Dwayne Charrington, 2011.
+* @copyright Dwayne Charrington, 2012.
 * @author Dwayne Charrington and other Github contributors
 * @license (DWYWALAYAM) 
            Do What You Want As Long As You Attribute Me Licence
-* @version 1.2
+* @version 1.3
 * @link http://ilikekillnerds.com
 */
 
@@ -32,4 +32,4 @@ $config['config_directory']     = APPPATH."third_party/Smarty/configs/";
 $config['template_ext']         = 'php';
 
 // Error reporting level to use while processing templates
-$config['template_error_reporting'] = "E_ALL & ~E_NOTICE";
+$config['template_error_reporting'] = E_ALL & ~E_NOTICE;
