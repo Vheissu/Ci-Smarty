@@ -2,11 +2,11 @@
 
 /**
 * @name CI Smarty
-* @copyright Dwayne Charrington, 2011.
+* @copyright Dwayne Charrington, 2012.
 * @author Dwayne Charrington and other Github contributors
 * @license (DWYWALAYAM) 
            Do What You Want As Long As You Attribute Me Licence
-* @version 1.2
+* @version 1.3
 * @link http://ilikekillnerds.com
 */
 
@@ -46,14 +46,6 @@ class CI_Smarty extends Smarty {
         }
         
         $this->error_reporting   = config_item('template_error_reporting');
-
-        // Add all helpers to plugins_dir
-        $helpers = glob(APPPATH . 'helpers/', GLOB_ONLYDIR | GLOB_MARK);
-
-        foreach ($helpers as $helper)
-        {
-            $this->plugins_dir[] = $helper;
-        }
         
         // Should let us access Codeigniter stuff in views
         $this->assign("this", $CI);
