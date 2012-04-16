@@ -54,13 +54,30 @@ class MY_Parser extends CI_Loader {
         }
         
         // If no file extension dot has been found default to defined extension for view extensions
-        if ( !stripos($template, '.') ) 
+        if ( ! stripos($template, '.') ) 
         {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
         
-        if ( !empty($this->_module) )
+        // If we have a module
+        if ( ! empty($this->_module) )
         {
+            // If we find a slash in the template and the first occurence is a module
+            if (stripos($template, '/') !== FALSE)
+            {
+                // Explode the template string
+                $exploded = explode('/', $template);
+
+                // If the first part of the template variable is a module name
+                if (strtolower($exploded[0]) === $this->_module)
+                {
+                    // Remove the module name including slash because we're already setting the module path
+                    $template = str_ireplace($exploded[0]."/", '', $template);
+                }
+
+            }
+
+            // Create the path to the module view
             $template = APPPATH . 'modules/' . $this->_module . '/views/' . $template;
         }
         
