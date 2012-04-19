@@ -78,7 +78,18 @@ class MY_Parser extends CI_Loader {
             }
 
             // Create the path to the module view
-            $template = APPPATH . 'modules/' . $this->_module . '/views/' . $template;
+            $module_template = APPPATH . 'modules/' . $this->_module . '/views/' . $template;
+        }
+
+        // Does this module view actually exist?
+        if (file_exists($module_template))
+        {
+            $template = $module_template;
+        }
+        // Nope, nothing here just go to the views folder then
+        else
+        {
+            $template = APPPATH . 'views/' . $template;
         }
         
         // If we have variables to assign, lets assign them
