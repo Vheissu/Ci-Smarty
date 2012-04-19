@@ -76,6 +76,11 @@ class MY_Parser extends CI_Loader {
                 }
 
             }
+            else
+            {
+                // We don't have a module name in our loading path
+                $new_exploded = $template;
+            }
 
             // Create the path to the module view
             $module_template = APPPATH . 'modules/' . $this->_module . '/views/' . $new_exploded;
