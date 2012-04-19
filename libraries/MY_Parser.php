@@ -72,13 +72,13 @@ class MY_Parser extends CI_Loader {
                 if (strtolower($exploded[0]) === $this->_module)
                 {
                     // Remove the module name including slash because we're already setting the module path
-                    $template = str_ireplace($exploded[0]."/", '', $template);
+                    $new_exploded = str_ireplace($exploded[0]."/", '', $template);
                 }
 
             }
 
             // Create the path to the module view
-            $module_template = APPPATH . 'modules/' . $this->_module . '/views/' . $template;
+            $module_template = APPPATH . 'modules/' . $this->_module . '/views/' . $new_exploded;
         }
 
         // Does this module view actually exist?
