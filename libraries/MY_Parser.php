@@ -58,6 +58,9 @@ class MY_Parser extends CI_Loader {
         {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
+
+        // Blank variable
+        $module_template = '';
         
         // If we have a module
         if ( ! empty($this->_module) )
