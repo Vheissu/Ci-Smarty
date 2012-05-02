@@ -1,14 +1,17 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* @name CI Smarty
-* @copyright Dwayne Charrington, 2012.
-* @author Dwayne Charrington and other Github contributors
-* @license (DWYWALAYAM) 
-           Do What You Want As Long As You Attribute Me Licence
-* @version 1.3
-* @link http://ilikekillnerds.com
-*/
+ * CI Smarty
+ *
+ * Smarty templating for Codeigniter
+ *
+ * @package   CI Smarty
+ * @author    Dwayne Charrington
+ * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
+ * @link      http://ilikekillnerds.com
+ * @license   http://www.apache.org/licenses/LICENSE-2.0.html
+ * @version   1.1
+ */
 
 require_once APPPATH."third_party/Smarty/Smarty.class.php";
 
