@@ -10,11 +10,18 @@
  * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
  * @link      http://ilikekillnerds.com
  * @license   http://www.apache.org/licenses/LICENSE-2.0.html
- * @version   1.1
+ * @version   1.2
  */
 
 // Your views directory with a trailing slash
-$config['template_directory']   = array(APPPATH."views/");
+$config['template_directory'] = array(
+	APPPATH."views"
+);
+
+// Should we traverse your application/views directory for sub-folders
+// in-case you want to use template inheritance and the master template
+// is in a sub-folder. true means on and false means off.
+$config['traverse_view_directories'] = TRUE;
 
 // Smarty caching enabled by default unless explicitly set to 0
 $config['cache_status']         = 1;

@@ -10,27 +10,29 @@
  * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
  * @link      http://ilikekillnerds.com
  * @license   http://www.apache.org/licenses/LICENSE-2.0.html
- * @version   1.1
+ * @version   1.2
  */
 
-class MY_Parser extends CI_Loader {
+class MY_Parser extends MY_Loader {
 
     protected $CI;
-    protected $theme_location;
     
-    private $_module = '';
+    protected $_module = '';
+    protected $_controller = '';
+    protected $_method = '';
     
     public function __construct()
     {
-        $this->CI = get_instance();
+        parent::__construct();
+
+        $this->CI =& get_instance();
         $this->CI->load->library('smarty');
-        
+
         // Modular Separation / Modular Extensions has been detected
-        if ( method_exists( $this->CI->router, 'fetch_module' ) )
+        if (method_exists( $this->CI->router, 'fetch_module' ))
         {
-            $this->_module = $this->CI->router->fetch_module();
+            $this->_module  = $this->CI->router->fetch_module();
         }
-           
     }
     
     /**
@@ -41,6 +43,7 @@ class MY_Parser extends CI_Loader {
     * @param array $data
     * @param boolean $return
     * @param mixed $caching
+    * @return string
     */
     public function parse($template, $data = array(), $return = FALSE, $caching = TRUE)
     {
@@ -62,45 +65,8 @@ class MY_Parser extends CI_Loader {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
 
-        $module_template = '';
-
-        // If we have a module
-        if ( ! empty($this->_module) )
-        {
-            // If we find a slash in the template and the first occurence is a module
-            if (stripos($template, '/') !== FALSE)
-            {
-                // Explode the template string
-                $exploded = explode('/', $template);
-
-                // If the first part of the template variable is a module name
-                if (strtolower($exploded[0]) === $this->_module)
-                {
-                    // Remove the module name including slash because we're already setting the module path
-                    $new_exploded = str_ireplace($exploded[0]."/", '', $template);
-                }
-
-            }
-            else
-            {
-                // We don't have a module name in our loading path
-                $new_exploded = $template;
-            }
-
-            // Create the path to the module view
-            $module_template = APPPATH . 'modules/' . $this->_module . '/views/' . $new_exploded;
-        }
-
-        // Does this module view actually exist?
-        if (file_exists($module_template))
-        {
-            $template = $module_template;
-        }
-        // Nope, nothing here just go to the views folder then
-        else
-        {
-            $template = APPPATH . 'views/' . $template;
-        }
+        // Get the location of our view, where the hell is it?
+        $template = $this->_find_view($template);
         
         // If we have variables to assign, lets assign them
         if (!empty($data))
@@ -123,6 +89,78 @@ class MY_Parser extends CI_Loader {
         // We're returning the contents, fo' shizzle
         return $template_string;
     }
+
+    /**
+    * Find View
+    * Searches through module and view folders looking for your view, sir.
+    *
+    * @access protected
+    * @param string $file - The view to search for
+    * @return string The path and file found
+    *
+    */
+    protected function _find_view($file)
+    {
+        // Ye ol' faithful views folder
+        $view_folder = APPPATH.'views/';
+
+        // The location of our HMVC modules
+        $modules_folder = APPPATH.'modules/';
+
+        // Final path
+        $final_path = FALSE;
+
+        // Make sure we have a module
+        if ($this->_module !== '')
+        {
+            // The module we're currently in, look in the views folder
+            $the_module = $modules_folder.$this->_module."/views/";
+
+            // Is the module name in the path?
+            $has_module_in_path = FALSE;
+
+            // Has the file got the modulename/ in it? Means we could be looking for a module view
+            if (stripos($file, $this->_module."/") !== FALSE)
+            {
+                // We could potentially have a module in the path name
+                $has_module_in_path = TRUE;
+            }
+
+            // Better tell the file_exists function we need to kind of strip that out
+            if ($has_module_in_path == TRUE)
+            {
+                // Our new file minus the module name if there is one
+                $file = str_replace($this->_module."/", "", $file);
+            }
+
+            // Look in the modules folder first, if the file is found we use it
+            if (file_exists($the_module.$file))
+            {
+                // Set our final path to be that of the module and view file
+                $final_path = $the_module.$file;
+            }
+            // Look in the application/views folder for the file
+            elseif (file_exists($view_folder.$file))
+            {
+                // Not found in a module views directory, maybe just in views?
+                $final_path = $view_folder.$file;
+            }
+            // Fuck, the view hasn't been found anywhere!
+            else
+            {
+                // There is no PATH!
+                $final_path = FALSE;
+            }
+
+            // Return the final path
+            return $final_path;
+        }
+        else
+        {
+            // No module, then just return the file in the normal views folder
+            return $view_folder.$file;
+        }
+    }
     
     /**
     * String Parse
@@ -133,7 +171,7 @@ class MY_Parser extends CI_Loader {
     * @param boolean $return
     * @param mixed $is_include
     */
-    function string_parse($template, $data = array(), $return = FALSE, $is_include = FALSE)
+    public function string_parse($template, $data = array(), $return = FALSE, $is_include = FALSE)
     {
         return $this->CI->smarty->fetch('string:'.$template, $data);
     }
@@ -148,7 +186,7 @@ class MY_Parser extends CI_Loader {
     * @param boolean $return
     * @param mixed $is_include
     */
-    function parse_string($template, $data = array(), $return = FALSE, $is_include = false)
+    public function parse_string($template, $data = array(), $return = FALSE, $is_include = false)
     {
         return $this->string_parse($template, $data, $return, $is_include);
     }
