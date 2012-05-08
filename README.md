@@ -8,7 +8,11 @@ Drop the contents of the download zip into your application directory, then edit
 
 ## HMVC Modular Extensions compatible
 
-I've spent a good chunk of time making CI Smarty support HMVC. The library will check for a file inside of your modulename/views folder and if a template doesn't exist, it will just check your standard application/views folder instead. Module views always override application views.
+I've spent a good chunk of time making CI Smarty support HMVC. The library will check for a file inside of your modulename/views folder and if a template doesn't exist, it will just check your standard application/views folder instead. Module views always override application views. 
+
+### Special note for HMVC Modular Extensions Users
+
+Modular Extensions comes with a application/core/MY_Loader which is vital to the operation of the library. CI Smarty comes with a MY_Loader of it's own, so do not copy the loader from this package into your app, instead copy the public $_ci_cached_vars declaration and paste it into your current MY_Loader. 
 
 ## Issues
 
