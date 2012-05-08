@@ -23,6 +23,7 @@ class MY_Parser extends CI_Parser {
     
     public function __construct()
     {
+        // Codeigniter instance and other required libraries/files
         $this->CI =& get_instance();
         $this->CI->load->library('smarty');
 
