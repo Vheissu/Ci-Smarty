@@ -15,10 +15,6 @@
 
 class MY_Loader extends CI_Loader {
 
-    public $_ci_cached_vars = array();
+    public $_ci_cached_vars;
     
-    public function __construct()
-    {
-        parent::__construct();
-    }
 }

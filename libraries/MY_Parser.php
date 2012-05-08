@@ -23,8 +23,6 @@ class MY_Parser extends CI_Parser {
     
     public function __construct()
     {
-        parent::__construct();
-
         $this->CI =& get_instance();
         $this->CI->load->library('smarty');
 
