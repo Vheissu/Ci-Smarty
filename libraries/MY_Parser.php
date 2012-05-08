@@ -68,8 +68,11 @@ class MY_Parser extends CI_Parser {
         // Get the location of our view, where the hell is it?
         $template = $this->_find_view($template);
 
-        // Merge in cached variables
-        $data = array_merge($data, $this->CI->load->_ci_cached_vars);
+        if (isset($this->CI->load->_ci_cached_vars))
+        {
+            // Merge in cached variables
+            $data = array_merge($data, $this->CI->load->_ci_cached_vars);
+        }
         
         // If we have variables to assign, lets assign them
         if (!empty($data))
