@@ -2,7 +2,7 @@
 /**
  * Project:     Smarty: the PHP compiling template engine
  * File:        Smarty.class.php
- * SVN:         $Id: Smarty.class.php 4518 2011-12-18 18:48:07Z rodneyrehm $
+ * SVN:         $Id: Smarty.class.php 4614 2012-05-24 15:13:19Z rodneyrehm $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@
  * @author Uwe Tews
  * @author Rodney Rehm
  * @package Smarty
- * @version 3.1.7
+ * @version 3.1-DEV
  */
 
 /**
@@ -113,7 +113,7 @@ class Smarty extends Smarty_Internal_TemplateBase {
     /**
      * smarty version
      */
-    const SMARTY_VERSION = 'Smarty-3.1.7';
+    const SMARTY_VERSION = 'Smarty-3.1.11';
 
     /**
      * define variable scopes
@@ -190,6 +190,10 @@ class Smarty extends Smarty_Internal_TemplateBase {
      */
     public static $_UTF8_MODIFIER = 'u';
     
+    /**
+     * Flag denoting if operating system is windows
+     */
+    public static $_IS_WINDOWS = false;
     
     /**#@+
      * variables
@@ -1277,6 +1281,8 @@ class Smarty extends Smarty_Internal_TemplateBase {
         }
         // plugin filename is expected to be: [type].[name].php
         $_plugin_filename = "{$_name_parts[1]}.{$_name_parts[2]}.php";
+        
+        $_stream_resolve_include_path = function_exists('stream_resolve_include_path');
 
         // loop through plugin dirs and find the plugin
         foreach($this->getPluginsDir() as $_plugin_dir) {
@@ -1291,7 +1297,13 @@ class Smarty extends Smarty_Internal_TemplateBase {
                 }
                 if ($this->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $_plugin_dir)) {
                     // try PHP include_path
-                    if (($file = Smarty_Internal_Get_Include_Path::getIncludePath($file)) !== false) {
+                    if ($_stream_resolve_include_path) {
+                        $file = stream_resolve_include_path($file);
+                    } else {
+                        $file = Smarty_Internal_Get_Include_Path::getIncludePath($file);
+                    }
+                    
+                    if ($file !== false) {
                         require_once($file);
                         return $file;
                     }
@@ -1455,6 +1467,9 @@ class Smarty extends Smarty_Internal_TemplateBase {
         restore_error_handler();
     }
 }
+
+// Check if we're running on windows
+Smarty::$_IS_WINDOWS = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 
 // let PCRE (preg_*) treat strings as ISO-8859-1 if we're not dealing with UTF-8
 if (Smarty::$_CHARSET !== 'UTF-8') {
