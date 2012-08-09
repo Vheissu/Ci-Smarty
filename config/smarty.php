@@ -10,7 +10,7 @@
  * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
  * @link      http://ilikekillnerds.com
  * @license   http://www.apache.org/licenses/LICENSE-2.0.html
- * @version   1.2
+ * @version   2.0
  */
 
 // Smarty caching enabled by default unless explicitly set to 0
