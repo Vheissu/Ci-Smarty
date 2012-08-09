@@ -10,7 +10,7 @@
  * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
  * @link      http://ilikekillnerds.com
  * @license   http://www.apache.org/licenses/LICENSE-2.0.html
- * @version   1.2
+ * @version   2.0
  */
 
 class MY_Parser extends CI_Parser {
@@ -18,24 +18,107 @@ class MY_Parser extends CI_Parser {
     protected $CI;
     
     protected $_module = '';
-    protected $_controller = '';
-    protected $_method = '';
+    protected $_template_locations = array();
+
+    // The name of the theme in use
+    protected $_theme_name = '';
     
     public function __construct()
     {
         // Codeigniter instance and other required libraries/files
         $this->CI =& get_instance();
         $this->CI->load->library('smarty');
+        
+        // Detect if we have a current module
+        $this->_module = $this->current_module();
 
+        // What controllers or methods are in use
+        $this->_controller  = $this->CI->router->fetch_class();
+        $this->_method      = $this->CI->router->fetch_method();
+
+        // If we don't have a theme name stored
+        if ($this->_theme_name == '')
+        {
+            $this->set_theme(config_item('theme_name'));
+        }
+
+        // Store a whole heap of template locations
+        $this->_template_locations = array( 
+            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/layouts/',
+            config_item('theme_path') . $this->_theme_name . '/views/layouts/',
+            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/',
+            config_item('theme_path') . $this->_theme_name . '/views/',
+            APPPATH . 'modules/' . $this->_module . '/views/layouts/',
+            APPPATH . 'modules/' . $this->_module . '/views/',
+            APPPATH . 'views/layouts/',
+            APPPATH . 'views/'
+        );
+
+        // Will add paths into Smarty for "smarter" inheritance and inclusion
+        $this->_add_paths();
+    }
+
+    /**
+     * Set Theme
+     *
+     * Set the theme to use
+     * 
+     * @return string
+     */
+    public function set_theme($name)
+    {
+        // Store the theme name
+        $this->_theme_name = trim($name);
+
+        // Our themes can have a functions.php file just like Wordpress
+        $functions_file = config_item('theme_path') . $this->_theme_name . '/functions.php';
+
+        // If we have a functions file, include it
+        if (file_exists($functions_file))
+        {
+            include_once($functions_file);
+        }
+
+    }
+
+    /**
+     * Get Theme
+     *
+     * Does what the function name implies: gets the name of
+     * the currently in use theme.
+     *
+     * @return string
+     */
+    public function get_theme()
+    {
+        return (isset($this->_theme_name)) ? $this->_theme_name : '';
+    }
+
+    /**
+    * Current Module
+    *
+    * Just a fancier way of getting the current module
+    * if we have support for modules
+    *
+    * @return string
+    */
+    public function current_module()
+    {
         // Modular Separation / Modular Extensions has been detected
         if (method_exists( $this->CI->router, 'fetch_module' ))
         {
-            $this->_module  = $this->CI->router->fetch_module();
+            $module = $this->CI->router->fetch_module(); 
+            return (!empty($module)) ? $module : '';
+        }
+        else
+        {
+            return '';
         }
     }
     
     /**
     * Parse
+    *
     * Parses a template using Smarty 3 engine
     * 
     * @param string $template
@@ -45,13 +128,7 @@ class MY_Parser extends CI_Parser {
     * @return string
     */
     public function parse($template, $data = array(), $return = FALSE, $caching = TRUE)
-    {
-        // Make sure we have a template, yo.
-        if (empty($template))
-        {
-            return FALSE;
-        }
-        
+    {        
         // If we don't want caching, disable it
         if ($caching === FALSE)
         {
@@ -59,34 +136,28 @@ class MY_Parser extends CI_Parser {
         }
         
         // If no file extension dot has been found default to defined extension for view extensions
-        if ( ! stripos($template, '.') ) 
+        if ( ! stripos($template, '.')) 
         {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
 
         // Get the location of our view, where the hell is it?
         $template = $this->_find_view($template);
-
-        if (isset($this->CI->load->_ci_cached_vars))
-        {
-            // Merge in cached variables
-            $data = array_merge($data, $this->CI->load->_ci_cached_vars);
-        }
         
         // If we have variables to assign, lets assign them
-        if (!empty($data))
+        if ( ! empty($data))
         {
-            foreach ($data as $key => $val)
+            foreach ($data AS $key => $val)
             {
                 $this->CI->smarty->assign($key, $val);
             }
         }
         
-        // Get our template data as a string
+        // Load our template into our string for judgement
         $template_string = $this->CI->smarty->fetch($template);
         
         // If we're returning the templates contents, we're displaying the template
-        if ($return == FALSE)
+        if ($return === FALSE)
         {
             $this->CI->output->append_output($template_string);
         }
@@ -97,78 +168,57 @@ class MY_Parser extends CI_Parser {
 
     /**
     * Find View
+    *
     * Searches through module and view folders looking for your view, sir.
     *
     * @access protected
     * @param string $file - The view to search for
     * @return string The path and file found
-    *
     */
     protected function _find_view($file)
     {
-        // Ye ol' faithful views folder
-        $view_folder = APPPATH.'views/';
+        // We have no path by default
+        $path = NULL;
 
-        // The location of our HMVC modules
-        $modules_folder = APPPATH.'modules/';
-
-        // Final path
-        $final_path = FALSE;
-
-        // Make sure we have a module
-        if ($this->_module !== '')
+        // Iterate over our saved locations and find the file
+        foreach($this->_template_locations AS $location)
         {
-            // The module we're currently in, look in the views folder
-            $the_module = $modules_folder.$this->_module."/views/";
-
-            // Is the module name in the path?
-            $has_module_in_path = FALSE;
-
-            // Has the file got the modulename/ in it? Means we could be looking for a module view
-            if (stripos($file, $this->_module."/") !== FALSE)
+            if (file_exists($location.$file) && $path == NULL)
             {
-                // We could potentially have a module in the path name
-                $has_module_in_path = TRUE;
-            }
+                // Store the file to load
+                $path = $location.$file;
 
-            // Better tell the file_exists function we need to kind of strip that out
-            if ($has_module_in_path == TRUE)
-            {
-                // Our new file minus the module name if there is one
-                $file = str_replace($this->_module."/", "", $file);
+                // Stop the loop, we found our file
+                break;
             }
-
-            // Look in the modules folder first, if the file is found we use it
-            if (file_exists($the_module.$file))
-            {
-                // Set our final path to be that of the module and view file
-                $final_path = $the_module.$file;
-            }
-            // Look in the application/views folder for the file
-            elseif (file_exists($view_folder.$file))
-            {
-                // Not found in a module views directory, maybe just in views?
-                $final_path = $view_folder.$file;
-            }
-            // Fuck, the view hasn't been found anywhere!
-            else
-            {
-                // There is no PATH!
-                $final_path = FALSE;
-            }
-
-            // Return the final path
-            return $final_path;
         }
-        else
+
+        // Return the path
+        return $path;
+    }
+
+    /**
+    * Add Paths
+    *
+    * Traverses all added template locations and adds them
+    * to Smarty so we can extend and include view files
+    * correctly from a slew of different locations including
+    * modules if we support them.
+    *
+    * @access protected
+    */
+    protected function _add_paths()
+    {
+        // Iterate over our saved locations and find the file
+        foreach($this->_template_locations AS $location)
         {
-            // No module, then just return the file in the normal views folder
-            return $view_folder.$file;
-        }
+            $this->CI->smarty->addTemplateDir($location);
+        }    
     }
     
     /**
     * String Parse
+    *
     * Parses a string using Smarty 3
     * 
     * @param string $template
@@ -183,6 +233,7 @@ class MY_Parser extends CI_Parser {
     
     /**
     * Parse String
+    *
     * Parses a string using Smarty 3. Never understood why there
     * was two identical functions in Codeigniter that did the same.
     * 

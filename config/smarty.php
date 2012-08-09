@@ -13,18 +13,14 @@
  * @version   1.2
  */
 
-// Your views directory with a trailing slash
-$config['template_directory'] = array(
-	APPPATH."views"
-);
-
-// Should we traverse your application/views directory for sub-folders
-// in-case you want to use template inheritance and the master template
-// is in a sub-folder. true means on and false means off.
-$config['traverse_view_directories'] = TRUE;
-
 // Smarty caching enabled by default unless explicitly set to 0
 $config['cache_status']         = 1;
+
+// The path to the themes
+$config['theme_path'] = FCPATH . '/themes/';
+
+// The default name of the theme to use (this can be overridden)
+$config['theme_name'] = "default";
 
 // Cache lifetime. Default value is 3600 seconds (1 hour) Smarty's default value
 $config['cache_lifetime']       = 3600;
