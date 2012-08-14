@@ -28,6 +28,9 @@ class CI_Smarty extends Smarty {
 
         // Load the Smarty config file
         $CI->load->config('smarty');
+        
+        // Turn on/off debug
+        $this->debugging = config_item('smarty_debug');
 
         // Set some pretty standard Smarty directories
         $this->setCompileDir(config_item('compile_directory'));
@@ -60,6 +63,7 @@ class CI_Smarty extends Smarty {
         // This means we can go for example {$this->session->userdata('item')}
         // just like we normally would in standard CI views
         $this->assign("this", $CI);
+
     }
 
     /**
