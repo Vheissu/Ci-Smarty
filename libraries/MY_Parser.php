@@ -68,9 +68,8 @@ class MY_Parser extends CI_Parser {
 
     	if(!method_exists($this, $method))
         {
-			return call_user_func_array(array($this->CI->smarty, $method), $params);
-
-		}
+		return call_user_func_array(array($this->CI->smarty, $method), $params);
+	}
     }
 
     /**
