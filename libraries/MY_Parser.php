@@ -57,6 +57,20 @@ class MY_Parser extends CI_Parser {
         // Will add paths into Smarty for "smarter" inheritance and inclusion
         $this->_add_paths();
     }
+    
+    /**
+    * Call
+    * able to call native Smarty methods
+    * @returns mixed
+    */
+    public function __call($method, $params=array())
+    {
+
+    	if(!method_exists($this, $method))
+        {
+		return call_user_func_array(array($this->CI->smarty, $method), $params);
+	}
+    }
 
     /**
      * Set Theme
