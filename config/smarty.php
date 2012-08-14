@@ -13,8 +13,8 @@
  * @version   2.0
  */
 
-// Smarty caching enabled by default unless explicitly set to 0
-$config['cache_status']         = 1;
+// Smarty caching enabled by default unless explicitly set to FALSE
+$config['cache_status']         = TRUE;
 
 // The path to the themes
 $config['theme_path'] = FCPATH . '/themes/';
