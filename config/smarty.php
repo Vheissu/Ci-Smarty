@@ -40,5 +40,5 @@ $config['template_ext']         = 'tpl';
 // Error reporting level to use while processing templates
 $config['template_error_reporting'] = E_ALL & ~E_NOTICE;
 
-// Debug mode turned on or off
-$config['smarty_debug'] = TRUE;
+// Debug mode turned on or off (TRUE / FALSE)
+$config['smarty_debug'] = FALSE;
