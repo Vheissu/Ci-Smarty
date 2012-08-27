@@ -42,20 +42,8 @@ class MY_Parser extends CI_Parser {
             $this->set_theme(config_item('theme_name'));
         }
 
-        // Store a whole heap of template locations
-        $this->_template_locations = array( 
-            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/layouts/',
-            config_item('theme_path') . $this->_theme_name . '/views/layouts/',
-            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/',
-            config_item('theme_path') . $this->_theme_name . '/views/',
-            APPPATH . 'modules/' . $this->_module . '/views/layouts/',
-            APPPATH . 'modules/' . $this->_module . '/views/',
-            APPPATH . 'views/layouts/',
-            APPPATH . 'views/'
-        );
-
-        // Will add paths into Smarty for "smarter" inheritance and inclusion
-        $this->_add_paths();
+        // Update theme paths
+        $this->_update_theme_paths();
     }
     
     /**
@@ -84,14 +72,23 @@ class MY_Parser extends CI_Parser {
         $this->_theme_name = trim($name);
 
         // Our themes can have a functions.php file just like Wordpress
-        $functions_file = config_item('theme_path') . $this->_theme_name . '/functions.php';
+        $functions_file  = config_item('theme_path') . $this->_theme_name . '/functions.php';
+
+        // Incase we have a theme in the application directory
+        $functions_file2 = APPPATH."themes/" . $this->_theme_name . '/functions.php';
 
         // If we have a functions file, include it
         if (file_exists($functions_file))
         {
             include_once($functions_file);
         }
+        elseif (file_exists($functions_file2))
+        {
+            include_once($functions_file2);
+        }
 
+        // Update theme paths
+        $this->_update_theme_paths();
     }
 
     /**
@@ -140,7 +137,7 @@ class MY_Parser extends CI_Parser {
     * @param mixed $caching
     * @return string
     */
-    public function parse($template, $data = array(), $return = FALSE, $caching = TRUE)
+    public function parse($template, $data = array(), $return = FALSE, $caching = TRUE, $theme = '')
     {        
         // If we don't want caching, disable it
         if ($caching === FALSE)
@@ -152,6 +149,12 @@ class MY_Parser extends CI_Parser {
         if ( ! stripos($template, '.')) 
         {
             $template = $template.".".$this->CI->smarty->template_ext;
+        }
+
+        // Are we overriding the theme on a per load view basis?
+        if ($theme !== '')
+        {
+            $this->set_theme($theme);
         }
 
         // Get the location of our view, where the hell is it?
@@ -173,6 +176,7 @@ class MY_Parser extends CI_Parser {
         if ($return === FALSE)
         {
             $this->CI->output->append_output($template_string);
+            return TRUE;
         }
         
         // We're returning the contents, fo' shizzle
@@ -196,7 +200,7 @@ class MY_Parser extends CI_Parser {
         // Iterate over our saved locations and find the file
         foreach($this->_template_locations AS $location)
         {
-            if (file_exists($location.$file) && $path == NULL)
+            if (file_exists($location.$file))
             {
                 // Store the file to load
                 $path = $location.$file;
@@ -227,6 +231,35 @@ class MY_Parser extends CI_Parser {
         {
             $this->CI->smarty->addTemplateDir($location);
         }    
+    }
+
+    /**
+     * Update Theme Paths
+     *
+     * Adds in the required locations for themes
+     *
+     * @access protected
+     */
+    protected function _update_theme_paths()
+    {
+        // Store a whole heap of template locations
+        $this->_template_locations = array( 
+            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/layouts/',
+            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/',
+            config_item('theme_path') . $this->_theme_name . '/views/layouts/',
+            config_item('theme_path') . $this->_theme_name . '/views/',
+            APPPATH . 'themes/' . $this->_theme_name . '/views/modules/'. $this->_module .'/layouts/',
+            APPPATH . 'themes/' . $this->_theme_name . '/views/modules/' . $this->_module .'/',
+            APPPATH . 'themes/' . $this->_theme_name . '/views/layouts/',
+            APPPATH . 'themes/' . $this->_theme_name . '/views/',
+            APPPATH . 'modules/' . $this->_module . '/views/layouts/',
+            APPPATH . 'modules/' . $this->_module . '/views/',
+            APPPATH . 'views/layouts/',
+            APPPATH . 'views/'
+        );
+
+        // Will add paths into Smarty for "smarter" inheritance and inclusion
+        $this->_add_paths();
     }
     
     /**
