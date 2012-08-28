@@ -2,9 +2,13 @@
 
 CI Smarty integrates Smarty into your Codeigniter applications extending the basic and very limited in-built parser library that comes with the framework. No configuration is really required (unless you want to change something), it works out of the box after dropping the files in and loading them. The in-built Codeigniter parsing library sucks, CI Smarty takes the power and ease of the Smarty templating language and adds easy drop-in support for Codeigniter and even supports HMVC.
 
-## In-built theming
+## In-built theming and Asset Management
 
-CI Smarty comes with complimentary functionality to add theming support in your Codeigniter applications. Simply create a themes directory in the root folder of your app and then inside of that folders of themes. If you're not using themes, then don't add anything and CI Smarty will work fine without them.
+CI Smarty comes with complimentary functionality to add theming support in your Codeigniter applications. Simply create a themes directory in the root folder of your app and then inside of that folders of themes. If you're not using themes, then don't add anything and CI Smarty will work fine without them. It's a good idea if you're building a web app to have a default theme in application/themes/themename and then allow themes in a different directory to override your default theme files.
+
+### Asset Management
+
+When dealing with themes you want to include static content like images and stylesheets as simply as possible. By calling; {css('file.css')}, {js('file.js')}, {img('file.jpg')}, etc in your themes files will automatically be embedded. It is assumed your files are in the directories; themename/css, themename/js and themename/images. To get a web friendly URL to your themes directory simply use: {theme_url()} which also supports adding file and folders.
 
 ## How to use it?
 
