@@ -1,10 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-function theme_url()
+function theme_url($location = '')
 {
     $CI =& get_instance();
 
-    return $CI->parser->theme_url();
+    return $CI->parser->theme_url($location);
 }
 
 function css($file)
