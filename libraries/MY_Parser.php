@@ -244,6 +244,25 @@ class MY_Parser extends CI_Parser {
         return $return;
     }
 
+    public function theme_url()
+    {
+        $return = '';
+
+        if ($this->_current_path !== NULL)
+        {
+            if (stripos(config_item('theme_path'), $this->_current_path))
+            {
+                $return = base_url(config_item('theme_path').$this->get_theme()."/");
+            }
+            else
+            {
+                $return = base_url('application/themes/'.$this->get_theme()."/");
+            }
+        }
+
+        return $return;
+    }
+
     /**
     * Find View
     *
