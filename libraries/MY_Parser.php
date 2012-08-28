@@ -187,6 +187,14 @@ class MY_Parser extends CI_Parser {
         return $template_string;
     }
 
+    /**
+     * CSS
+     *
+     * An asset function that returns a CSS stylesheet
+     *
+     * @param $file
+     * @return string
+     */
     public function css($file)
     {
         $return = '';
@@ -206,6 +214,14 @@ class MY_Parser extends CI_Parser {
         return $return;
     }
 
+    /**
+     * JS
+     *
+     * An asset function that returns a script embed tag
+     *
+     * @param $file
+     * @return string
+     */
     public function js($file)
     {
         $return = '';
@@ -225,6 +241,14 @@ class MY_Parser extends CI_Parser {
         return $return;
     }
 
+    /**
+     * IMG
+     *
+     * An asset function that returns an image tag
+     *
+     * @param $file
+     * @return string
+     */
     public function img($file)
     {
         $return = '';
@@ -244,7 +268,15 @@ class MY_Parser extends CI_Parser {
         return $return;
     }
 
-    public function theme_url()
+    /**
+     * Theme URL
+     *
+     * A web friendly URL for determining the current
+     * theme root location.
+     *
+     * @return string
+     */
+    public function theme_url($location = '')
     {
         $return = '';
 
@@ -253,10 +285,22 @@ class MY_Parser extends CI_Parser {
             if (stripos(config_item('theme_path'), $this->_current_path))
             {
                 $return = base_url(config_item('theme_path').$this->get_theme()."/");
+
+                // If we want to add something to the end of the theme URL
+                if ($location !== '')
+                {
+                    $return = $return.$location;
+                }
             }
             else
             {
                 $return = base_url('application/themes/'.$this->get_theme()."/");
+
+                // If we want to add something to the end of the theme URL
+                if ($location !== '')
+                {
+                    $return = $return.$location;
+                }
             }
         }
 
