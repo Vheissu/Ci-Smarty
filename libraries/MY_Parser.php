@@ -20,6 +20,9 @@ class MY_Parser extends CI_Parser {
     protected $_module = '';
     protected $_template_locations = array();
 
+    // Current theme location
+    protected $_current_path = NULL;
+
     // The name of the theme in use
     protected $_theme_name = '';
     
@@ -28,6 +31,7 @@ class MY_Parser extends CI_Parser {
         // Codeigniter instance and other required libraries/files
         $this->CI =& get_instance();
         $this->CI->load->library('smarty');
+        $this->CI->load->helper('parser');
         
         // Detect if we have a current module
         $this->_module = $this->current_module();
@@ -183,6 +187,63 @@ class MY_Parser extends CI_Parser {
         return $template_string;
     }
 
+    public function css($file)
+    {
+        $return = '';
+
+        if ($this->_current_path !== NULL)
+        {
+            if (stripos(config_item('theme_path'), $this->_current_path))
+            {
+                $return = '<link rel="stylesheet" type="text/css" href="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'">';
+            }
+            else
+            {
+                $return = '<link rel="stylesheet" type="text/css" href="'.base_url('application/themes/'.$this->get_theme()."/css/".$file).'">';
+            }
+        }
+
+        return $return;
+    }
+
+    public function js($file)
+    {
+        $return = '';
+
+        if ($this->_current_path !== NULL)
+        {
+            if (stripos(config_item('theme_path'), $this->_current_path))
+            {
+                $return = '<script type="text/javascript" src="'.base_url(config_item('theme_path').$this->get_theme()."/js/".$file).'"></script>';
+            }
+            else
+            {
+                $return = '<script type="text/javascript" src="'.base_url('application/themes/'.$this->get_theme()."/js/".$file).'"></script>';
+            }
+        }
+
+        return $return;
+    }
+
+    public function img($file)
+    {
+        $return = '';
+
+        if ($this->_current_path !== NULL)
+        {
+            if (stripos(config_item('theme_path'), $this->_current_path))
+            {
+                $return = '<img src ="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" />';
+            }
+            else
+            {
+                $return = '<img src="'.base_url('application/themes/'.$this->get_theme()."/css/".$file).'" />';
+            }
+        }
+
+        return $return;
+    }
+
     /**
     * Find View
     *
@@ -204,6 +265,8 @@ class MY_Parser extends CI_Parser {
             {
                 // Store the file to load
                 $path = $location.$file;
+
+                $this->_current_path = $location;
 
                 // Stop the loop, we found our file
                 break;
