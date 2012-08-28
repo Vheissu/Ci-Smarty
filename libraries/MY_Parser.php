@@ -67,7 +67,9 @@ class MY_Parser extends CI_Parser {
      * Set Theme
      *
      * Set the theme to use
-     * 
+     *
+     * @access public
+     * @param $name
      * @return string
      */
     public function set_theme($name)
@@ -109,13 +111,14 @@ class MY_Parser extends CI_Parser {
     }
 
     /**
-    * Current Module
-    *
-    * Just a fancier way of getting the current module
-    * if we have support for modules
-    *
-    * @return string
-    */
+     * Current Module
+     *
+     * Just a fancier way of getting the current module
+     * if we have support for modules
+     *
+     * @access public
+     * @return string
+     */
     public function current_module()
     {
         // Modular Separation / Modular Extensions has been detected
@@ -131,16 +134,18 @@ class MY_Parser extends CI_Parser {
     }
     
     /**
-    * Parse
-    *
-    * Parses a template using Smarty 3 engine
-    * 
-    * @param string $template
-    * @param array $data
-    * @param boolean $return
-    * @param mixed $caching
-    * @return string
-    */
+     * Parse
+     *
+     * Parses a template using Smarty 3 engine
+     *
+     * @access public
+     * @param $template
+     * @param $data
+     * @param $return
+     * @param $caching
+     * @param $theme
+     * @return string
+     */
     public function parse($template, $data = array(), $return = FALSE, $caching = TRUE, $theme = '')
     {        
         // If we don't want caching, disable it
@@ -192,22 +197,31 @@ class MY_Parser extends CI_Parser {
      *
      * An asset function that returns a CSS stylesheet
      *
+     * @access public
      * @param $file
      * @return string
      */
-    public function css($file)
+    public function css($file, $attributes = array())
     {
         $return = '';
+
+        $defaults = array(
+            'media' => 'screen',
+            'rel'   => 'stylesheet',
+            'type'  => 'text/css'
+        );
+
+        $attributes = array_merge($defaults, $attributes);
 
         if ($this->_current_path !== NULL)
         {
             if (stripos(config_item('theme_path'), $this->_current_path))
             {
-                $return = '<link rel="stylesheet" type="text/css" href="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'">';
+                $return = '<link rel="'.$attributes['rel'].'" type="'.$attributes['type'].'" href="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" media="'.$attributes['media'].'">';
             }
             else
             {
-                $return = '<link rel="stylesheet" type="text/css" href="'.base_url('application/themes/'.$this->get_theme()."/css/".$file).'">';
+                $return = '<link rel="'.$attributes['rel'].'" type="'.$attributes['type'].'" href="'.base_url('application/themes/'.$this->get_theme()."/css/".$file).'" media="'.$attributes['media'].'">';
             }
         }
 
@@ -219,22 +233,29 @@ class MY_Parser extends CI_Parser {
      *
      * An asset function that returns a script embed tag
      *
+     * @access public
      * @param $file
      * @return string
      */
-    public function js($file)
+    public function js($file, $attributes = array())
     {
         $return = '';
+
+        $defaults = array(
+            'type'  => 'text/javascript'
+        );
+
+        $attributes = array_merge($defaults, $attributes);
 
         if ($this->_current_path !== NULL)
         {
             if (stripos(config_item('theme_path'), $this->_current_path))
             {
-                $return = '<script type="text/javascript" src="'.base_url(config_item('theme_path').$this->get_theme()."/js/".$file).'"></script>';
+                $return = '<script type="'.$attributes['type'].'" src="'.base_url(config_item('theme_path').$this->get_theme()."/js/".$file).'"></script>';
             }
             else
             {
-                $return = '<script type="text/javascript" src="'.base_url('application/themes/'.$this->get_theme()."/js/".$file).'"></script>';
+                $return = '<script type="'.$attributes['type'].'" src="'.base_url('application/themes/'.$this->get_theme()."/js/".$file).'"></script>';
             }
         }
 
@@ -246,12 +267,20 @@ class MY_Parser extends CI_Parser {
      *
      * An asset function that returns an image tag
      *
+     * @access public
      * @param $file
      * @return string
      */
-    public function img($file)
+    public function img($file, $attributes = array())
     {
         $return = '';
+
+        $defaults = array(
+            'alt'    => '',
+            'title'  => ''
+        );
+
+        $attributes = array_merge($defaults, $attributes);
 
         if ($this->_current_path !== NULL)
         {
@@ -274,6 +303,8 @@ class MY_Parser extends CI_Parser {
      * A web friendly URL for determining the current
      * theme root location.
      *
+     * @access public
+     * @param $location
      * @return string
      */
     public function theme_url($location = '')
@@ -313,7 +344,7 @@ class MY_Parser extends CI_Parser {
     * Searches through module and view folders looking for your view, sir.
     *
     * @access protected
-    * @param string $file - The view to search for
+    * @param $file
     * @return string The path and file found
     */
     protected function _find_view($file)

@@ -36,12 +36,13 @@ function theme_url($location = '')
  * in a web friendly format
  *
  * @param $file
+ * @param $attributes
  */
-function css($file)
+function css($file, $attributes = array())
 {
     $CI =& get_instance();
 
-    echo $CI->parser->css($file);
+    echo $CI->parser->css($file, $attributes);
 }
 
 /**
@@ -51,12 +52,13 @@ function css($file)
  * in a web friendly format
  *
  * @param $file
+ * @param $attributes
  */
-function js($file)
+function js($file, $attributes = array())
 {
     $CI =& get_instance();
 
-    echo $CI->parser->js($file);
+    echo $CI->parser->js($file, $attributes);
 }
 
 /**
@@ -66,10 +68,11 @@ function js($file)
  * in a web friendly format
  *
  * @param $file
+ * @param $attributes
  */
-function img($file)
+function img($file, $attributes = array())
 {
     $CI =& get_instance();
 
-    echo $CI->parser->img($file);
+    echo $CI->parser->img($file, $attributes);
 }
