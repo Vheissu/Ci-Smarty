@@ -203,8 +203,6 @@ class MY_Parser extends CI_Parser {
      */
     public function css($file, $attributes = array())
     {
-        $return = '';
-
         $defaults = array(
             'media' => 'screen',
             'rel'   => 'stylesheet',
@@ -213,17 +211,7 @@ class MY_Parser extends CI_Parser {
 
         $attributes = array_merge($defaults, $attributes);
 
-        if ($this->_current_path !== NULL)
-        {
-            if (stripos(config_item('theme_path'), $this->_current_path))
-            {
-                $return = '<link rel="'.$attributes['rel'].'" type="'.$attributes['type'].'" href="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" media="'.$attributes['media'].'">';
-            }
-            else
-            {
-                $return = '<link rel="'.$attributes['rel'].'" type="'.$attributes['type'].'" href="'.base_url('application/themes/'.$this->get_theme()."/css/".$file).'" media="'.$attributes['media'].'">';
-            }
-        }
+        $return = '<link rel="'.$attributes['rel'].'" type="'.$attributes['type'].'" href="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" media="'.$attributes['media'].'">';
 
         return $return;
     }
@@ -239,25 +227,13 @@ class MY_Parser extends CI_Parser {
      */
     public function js($file, $attributes = array())
     {
-        $return = '';
-
         $defaults = array(
             'type'  => 'text/javascript'
         );
 
         $attributes = array_merge($defaults, $attributes);
 
-        if ($this->_current_path !== NULL)
-        {
-            if (stripos(config_item('theme_path'), $this->_current_path))
-            {
-                $return = '<script type="'.$attributes['type'].'" src="'.base_url(config_item('theme_path').$this->get_theme()."/js/".$file).'"></script>';
-            }
-            else
-            {
-                $return = '<script type="'.$attributes['type'].'" src="'.base_url('application/themes/'.$this->get_theme()."/js/".$file).'"></script>';
-            }
-        }
+        $return = '<script type="'.$attributes['type'].'" src="'.base_url(config_item('theme_path').$this->get_theme()."/js/".$file).'"></script>';
 
         return $return;
     }
@@ -273,8 +249,6 @@ class MY_Parser extends CI_Parser {
      */
     public function img($file, $attributes = array())
     {
-        $return = '';
-
         $defaults = array(
             'alt'    => '',
             'title'  => ''
@@ -282,17 +256,7 @@ class MY_Parser extends CI_Parser {
 
         $attributes = array_merge($defaults, $attributes);
 
-        if ($this->_current_path !== NULL)
-        {
-            if (stripos(config_item('theme_path'), $this->_current_path))
-            {
-                $return = '<img src ="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" />';
-            }
-            else
-            {
-                $return = '<img src="'.base_url('application/themes/'.$this->get_theme()."/css/".$file).'" />';
-            }
-        }
+        $return = '<img src ="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" alt="'.$attributes['alt'].'" title="'.$attributes['title'].'" />';
 
         return $return;
     }
@@ -309,30 +273,13 @@ class MY_Parser extends CI_Parser {
      */
     public function theme_url($location = '')
     {
-        $return = '';
+        // The path to return
+        $return = base_url(config_item('theme_path').$this->get_theme()."/");
 
-        if ($this->_current_path !== NULL)
+        // If we want to add something to the end of the theme URL
+        if ($location !== '')
         {
-            if (stripos(config_item('theme_path'), $this->_current_path))
-            {
-                $return = base_url(config_item('theme_path').$this->get_theme()."/");
-
-                // If we want to add something to the end of the theme URL
-                if ($location !== '')
-                {
-                    $return = $return.$location;
-                }
-            }
-            else
-            {
-                $return = base_url('application/themes/'.$this->get_theme()."/");
-
-                // If we want to add something to the end of the theme URL
-                if ($location !== '')
-                {
-                    $return = $return.$location;
-                }
-            }
+            $return = $return.$location;
         }
 
         return $return;
@@ -405,10 +352,6 @@ class MY_Parser extends CI_Parser {
             config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/',
             config_item('theme_path') . $this->_theme_name . '/views/layouts/',
             config_item('theme_path') . $this->_theme_name . '/views/',
-            APPPATH . 'themes/' . $this->_theme_name . '/views/modules/'. $this->_module .'/layouts/',
-            APPPATH . 'themes/' . $this->_theme_name . '/views/modules/' . $this->_module .'/',
-            APPPATH . 'themes/' . $this->_theme_name . '/views/layouts/',
-            APPPATH . 'themes/' . $this->_theme_name . '/views/',
             APPPATH . 'modules/' . $this->_module . '/views/layouts/',
             APPPATH . 'modules/' . $this->_module . '/views/',
             APPPATH . 'views/layouts/',
