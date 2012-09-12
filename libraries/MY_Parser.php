@@ -167,7 +167,11 @@ class MY_Parser extends CI_Parser {
         }
 
         // Get the location of our view, where the hell is it?
-        $template = $this->_find_view($template);
+        //added check for custom resources
+        if ( ! stripos($template, ':')) 
+        {
+          $template = $this->_find_view($template);
+        }
         
         // If we have variables to assign, lets assign them
         if ( ! empty($data))
@@ -256,7 +260,7 @@ class MY_Parser extends CI_Parser {
 
         $attributes = array_merge($defaults, $attributes);
 
-        $return = '<img src ="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" alt="'.$attributes['alt'].'" title="'.$attributes['title'].'" />';
+        $return = '<img src ="'.base_url(config_item('theme_path').$this->get_theme()."/img/".$file).'" alt="'.$attributes['alt'].'" title="'.$attributes['title'].'" />';
 
         return $return;
     }
