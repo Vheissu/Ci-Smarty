@@ -167,10 +167,10 @@ class MY_Parser extends CI_Parser {
         }
 
         // Get the location of our view, where the hell is it?
-        //added check for custom resources
+        // But only if we're not accessing a smart resource
         if ( ! stripos($template, ':')) 
         {
-          $template = $this->_find_view($template);
+            $template = $this->_find_view($template);
         }
         
         // If we have variables to assign, lets assign them
@@ -278,7 +278,7 @@ class MY_Parser extends CI_Parser {
     public function theme_url($location = '')
     {
         // The path to return
-        $return = base_url(config_item('theme_path').$this->get_theme()."/");
+        $return = base_url(config_item('theme_path').$this->get_theme())."/";
 
         // If we want to add something to the end of the theme URL
         if ($location !== '')
@@ -286,7 +286,7 @@ class MY_Parser extends CI_Parser {
             $return = $return.$location;
         }
 
-        return $return;
+        return trim($return);
     }
 
     /**
