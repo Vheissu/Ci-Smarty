@@ -58,6 +58,11 @@ class CI_Smarty extends Smarty {
         
         // Set the error reporting level
         $this->error_reporting   = config_item('template_error_reporting');
+
+        // This will fix various issues like filemtime errors that some people experience
+        // The cause of this is most likely setting the error_reporting value above
+        // This is a static function in the main Smarty class
+        Smarty::muteExpectedErrors();
         
         // Should let us access Codeigniter stuff in views
         // This means we can go for example {$this->session->userdata('item')}
