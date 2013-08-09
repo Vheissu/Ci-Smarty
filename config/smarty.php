@@ -6,11 +6,11 @@
  * Smarty templating for Codeigniter
  *
  * @package   CI Smarty
- * @author    Dwayne Charrington
- * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
- * @link      http://ilikekillnerds.com
- * @license   http://www.apache.org/licenses/LICENSE-2.0.html
- * @version   2.0
+ * @author       Dwayne Charrington
+ * @copyright  2013 Dwayne Charrington and Github contributors
+ * @link            http://ilikekillnerds.com
+ * @license     http://www.apache.org/licenses/LICENSE-2.0.html
+ * @version     2.0
  */
 
 // Smarty caching enabled by default unless explicitly set to FALSE

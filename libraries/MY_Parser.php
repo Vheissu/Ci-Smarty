@@ -6,17 +6,17 @@
  * Smarty templating for Codeigniter
  *
  * @package   CI Smarty
- * @author    Dwayne Charrington
- * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
- * @link      http://ilikekillnerds.com
- * @license   http://www.apache.org/licenses/LICENSE-2.0.html
- * @version   2.0
+ * @author       Dwayne Charrington
+ * @copyright  2013 Dwayne Charrington and Github contributors
+ * @link            http://ilikekillnerds.com
+ * @license     http://www.apache.org/licenses/LICENSE-2.0.html
+ * @version     2.0
  */
 
 class MY_Parser extends CI_Parser {
 
     protected $CI;
-    
+
     protected $_module = '';
     protected $_template_locations = array();
 
@@ -25,14 +25,14 @@ class MY_Parser extends CI_Parser {
 
     // The name of the theme in use
     protected $_theme_name = '';
-    
+
     public function __construct()
     {
         // Codeigniter instance and other required libraries/files
         $this->CI =& get_instance();
         $this->CI->load->library('smarty');
         $this->CI->load->helper('parser');
-        
+
         // Detect if we have a current module
         $this->_module = $this->current_module();
 
@@ -49,7 +49,7 @@ class MY_Parser extends CI_Parser {
         // Update theme paths
         $this->_update_theme_paths();
     }
-    
+
     /**
     * Call
     * able to call native Smarty methods
@@ -57,10 +57,10 @@ class MY_Parser extends CI_Parser {
     */
     public function __call($method, $params=array())
     {
-    	if(!method_exists($this, $method))
+        if ( ! method_exists($this, $method) )
         {
-		return call_user_func_array(array($this->CI->smarty, $method), $params);
-	}
+            return call_user_func_array(array($this->CI->smarty, $method), $params);
+        }
     }
 
     /**
@@ -124,7 +124,7 @@ class MY_Parser extends CI_Parser {
         // Modular Separation / Modular Extensions has been detected
         if (method_exists( $this->CI->router, 'fetch_module' ))
         {
-            $module = $this->CI->router->fetch_module(); 
+            $module = $this->CI->router->fetch_module();
             return (!empty($module)) ? $module : '';
         }
         else
@@ -132,7 +132,7 @@ class MY_Parser extends CI_Parser {
             return '';
         }
     }
-    
+
     /**
      * Parse
      *
@@ -147,15 +147,15 @@ class MY_Parser extends CI_Parser {
      * @return string
      */
     public function parse($template, $data = array(), $return = FALSE, $caching = TRUE, $theme = '')
-    {        
+    {
         // If we don't want caching, disable it
         if ($caching === FALSE)
         {
             $this->CI->smarty->disable_caching();
         }
-        
+
         // If no file extension dot has been found default to defined extension for view extensions
-        if ( ! stripos($template, '.')) 
+        if ( ! stripos($template, '.'))
         {
             $template = $template.".".$this->CI->smarty->template_ext;
         }
@@ -168,11 +168,11 @@ class MY_Parser extends CI_Parser {
 
         // Get the location of our view, where the hell is it?
         // But only if we're not accessing a smart resource
-        if ( ! stripos($template, ':')) 
+        if ( ! stripos($template, ':'))
         {
             $template = $this->_find_view($template);
         }
-        
+
         // If we have variables to assign, lets assign them
         if ( ! empty($data))
         {
@@ -181,17 +181,17 @@ class MY_Parser extends CI_Parser {
                 $this->CI->smarty->assign($key, $val);
             }
         }
-        
+
         // Load our template into our string for judgement
         $template_string = $this->CI->smarty->fetch($template);
-        
+
         // If we're returning the templates contents, we're displaying the template
         if ($return === FALSE)
         {
             $this->CI->output->append_output($template_string);
             return TRUE;
         }
-        
+
         // We're returning the contents, fo' shizzle
         return $template_string;
     }
@@ -338,7 +338,7 @@ class MY_Parser extends CI_Parser {
         foreach($this->_template_locations AS $location)
         {
             $this->CI->smarty->addTemplateDir($location);
-        }    
+        }
     }
 
     /**
@@ -351,7 +351,7 @@ class MY_Parser extends CI_Parser {
     protected function _update_theme_paths()
     {
         // Store a whole heap of template locations
-        $this->_template_locations = array( 
+        $this->_template_locations = array(
             config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/layouts/',
             config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/',
             config_item('theme_path') . $this->_theme_name . '/views/layouts/',
@@ -365,12 +365,12 @@ class MY_Parser extends CI_Parser {
         // Will add paths into Smarty for "smarter" inheritance and inclusion
         $this->_add_paths();
     }
-    
+
     /**
     * String Parse
     *
     * Parses a string using Smarty 3
-    * 
+    *
     * @param string $template
     * @param array $data
     * @param boolean $return
@@ -380,13 +380,13 @@ class MY_Parser extends CI_Parser {
     {
         return $this->CI->smarty->fetch('string:'.$template, $data);
     }
-    
+
     /**
     * Parse String
     *
     * Parses a string using Smarty 3. Never understood why there
     * was two identical functions in Codeigniter that did the same.
-    * 
+    *
     * @param string $template
     * @param array $data
     * @param boolean $return

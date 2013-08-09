@@ -6,17 +6,17 @@
  * Smarty templating for Codeigniter
  *
  * @package   CI Smarty
- * @author    Dwayne Charrington
- * @copyright Copyright (c) 2012 Dwayne Charrington and Github contributors
- * @link      http://ilikekillnerds.com
- * @license   http://www.apache.org/licenses/LICENSE-2.0.html
- * @version   2.0
+ * @author       Dwayne Charrington
+ * @copyright  2013 Dwayne Charrington and Github contributors
+ * @link            http://ilikekillnerds.com
+ * @license     http://www.apache.org/licenses/LICENSE-2.0.html
+ * @version     2.0
  */
 
 require_once APPPATH."third_party/Smarty/Smarty.class.php";
 
 class CI_Smarty extends Smarty {
-    
+
     public $template_ext = '.php';
 
     public function __construct()
@@ -28,7 +28,7 @@ class CI_Smarty extends Smarty {
 
         // Load the Smarty config file
         $CI->load->config('smarty');
-        
+
         // Turn on/off debug
         $this->debugging = config_item('smarty_debug');
 
@@ -39,13 +39,13 @@ class CI_Smarty extends Smarty {
 
         // Default template extension
         $this->template_ext = config_item('template_ext');
-        
+
         // How long to cache templates for
         $this->cache_lifetime = config_item('cache_lifetime');
-        
+
         // Disable Smarty security policy
         $this->disableSecurity();
-        
+
         // If caching is enabled, then disable force compile and enable cache
         if (config_item('cache_status') === TRUE)
         {
@@ -55,7 +55,7 @@ class CI_Smarty extends Smarty {
         {
             $this->disable_caching();
         }
-        
+
         // Set the error reporting level
         $this->error_reporting   = config_item('template_error_reporting');
 
@@ -63,7 +63,7 @@ class CI_Smarty extends Smarty {
         // The cause of this is most likely setting the error_reporting value above
         // This is a static function in the main Smarty class
         Smarty::muteExpectedErrors();
-        
+
         // Should let us access Codeigniter stuff in views
         // This means we can go for example {$this->session->userdata('item')}
         // just like we normally would in standard CI views
@@ -81,7 +81,7 @@ class CI_Smarty extends Smarty {
     {
         $this->caching = 1;
     }
-    
+
     /**
      * Disable Caching
      *
@@ -90,7 +90,7 @@ class CI_Smarty extends Smarty {
      */
     public function disable_caching()
     {
-        $this->caching = 0; 
+        $this->caching = 0;
     }
 
 }
