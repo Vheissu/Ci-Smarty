@@ -303,8 +303,29 @@ class MY_Parser extends CI_Parser {
         // We have no path by default
         $path = NULL;
 
+        // Get template locations
+        $locations = $this->_template_locations;
+
+        // Get the current module
+        $current_module = $this->current_module();
+
+        if ($current_module !== $this->_module)
+        {
+            $new_locations = array(
+                config_item('theme_path') . $this->_theme_name . '/views/modules/' . $current_module .'/layouts/',
+                config_item('theme_path') . $this->_theme_name . '/views/modules/' . $current_module .'/',
+                APPPATH . 'modules/' . $current_module . '/views/layouts/',
+                APPPATH . 'modules/' . $current_module . '/views/'
+            );
+
+            foreach ($new_locations AS $new_location)
+            {
+                array_unshift($locations, $new_location);
+            }
+        }
+
         // Iterate over our saved locations and find the file
-        foreach($this->_template_locations AS $location)
+        foreach($locations AS $location)
         {
             if (file_exists($location.$file))
             {
