@@ -5,8 +5,8 @@
  *
  * Smarty templating for Codeigniter
  *
- * @package    CI Smarty
- * @author       Dwayne Charrington
+ * @package   CI Smarty
+ * @author      Dwayne Charrington
  * @copyright  2014 Dwayne Charrington and Github contributors
  * @link           http://ilikekillnerds.com
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html
