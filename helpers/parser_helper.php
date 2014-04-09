@@ -85,3 +85,54 @@ if ( ! function_exists('image') )
         echo $CI->parser->img($file, $attributes);
     }
 }
+
+/**
+ * Session
+ *
+ * A helper function for getting a session variable alias of $this->session->userdata($name)
+ *
+ * @param $name
+ */
+if ( ! function_exists('userdata') )
+{
+    function userdata($name)
+    {
+        $CI =& get_instance();
+
+        return $CI->session->userdata($name);
+    }
+}
+
+/**
+ * Uri segment
+ *
+ * A helper function for getting a uri segment alias of $this->uri->segment(n)
+ *
+ * @param $segnum
+ */
+if ( ! function_exists('uriseg') )
+{
+    function uriseg($segnum)
+    {
+        $CI =& get_instance();
+
+        return $CI->uri->segment($segnum);
+    }
+}
+
+/**
+ * Flashdata
+ *
+ * A helper function for getting a flash message alias of $this->session->flashdata($name)
+ *
+ * @param $name
+ */
+if ( ! function_exists('flashdata') )
+{
+    function flashdata($name)
+    {
+        $CI =& get_instance();
+
+        return $CI->session->flashdata($name);
+    }
+}
