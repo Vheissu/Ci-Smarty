@@ -29,7 +29,7 @@ class MY_Parser extends CI_Parser {
     public function __construct()
     {
         // Codeigniter instance and other required libraries/files
-        $this->CI =& get_instance();
+        $this->CI = get_instance();
         $this->CI->load->library('smarty');
         $this->CI->load->helper('parser');
 
@@ -38,12 +38,12 @@ class MY_Parser extends CI_Parser {
 
         // What controllers or methods are in use
         $this->_controller  = $this->CI->router->fetch_class();
-        $this->_method      = $this->CI->router->fetch_method();
+        $this->_method     = $this->CI->router->fetch_method();
 
         // If we don't have a theme name stored
         if ($this->_theme_name == '')
         {
-            $this->set_theme(config_item('theme_name'));
+            $this->set_theme(config_item('smarty.theme_name'));
         }
 
         // Update theme paths
@@ -78,7 +78,7 @@ class MY_Parser extends CI_Parser {
         $this->_theme_name = trim($name);
 
         // Our themes can have a functions.php file just like Wordpress
-        $functions_file  = config_item('theme_path') . $this->_theme_name . '/functions.php';
+        $functions_file  = config_item('smarty.theme_path') . $this->_theme_name . '/functions.php';
 
         // Incase we have a theme in the application directory
         $functions_file2 = APPPATH."themes/" . $this->_theme_name . '/functions.php';
@@ -215,7 +215,7 @@ class MY_Parser extends CI_Parser {
 
         $attributes = array_merge($defaults, $attributes);
 
-        $return = '<link rel="'.$attributes['rel'].'" type="'.$attributes['type'].'" href="'.base_url(config_item('theme_path').$this->get_theme()."/css/".$file).'" media="'.$attributes['media'].'">';
+        $return = '<link rel="'.$attributes['rel'].'" type="'.$attributes['type'].'" href="'.base_url(config_item('smarty.theme_path').$this->get_theme()."/css/".$file).'" media="'.$attributes['media'].'">';
 
         return $return;
     }
@@ -237,7 +237,7 @@ class MY_Parser extends CI_Parser {
 
         $attributes = array_merge($defaults, $attributes);
 
-        $return = '<script type="'.$attributes['type'].'" src="'.base_url(config_item('theme_path').$this->get_theme()."/js/".$file).'"></script>';
+        $return = '<script type="'.$attributes['type'].'" src="'.base_url(config_item('smarty.theme_path').$this->get_theme()."/js/".$file).'"></script>';
 
         return $return;
     }
@@ -260,7 +260,7 @@ class MY_Parser extends CI_Parser {
 
         $attributes = array_merge($defaults, $attributes);
 
-        $return = '<img src ="'.base_url(config_item('theme_path').$this->get_theme()."/img/".$file).'" alt="'.$attributes['alt'].'" title="'.$attributes['title'].'" />';
+        $return = '<img src ="'.base_url(config_item('smarty.theme_path').$this->get_theme()."/img/".$file).'" alt="'.$attributes['alt'].'" title="'.$attributes['title'].'" />';
 
         return $return;
     }
@@ -278,7 +278,7 @@ class MY_Parser extends CI_Parser {
     public function theme_url($location = '')
     {
         // The path to return
-        $return = base_url(config_item('theme_path').$this->get_theme())."/";
+        $return = base_url(config_item('smarty.theme_path').$this->get_theme())."/";
 
         // If we want to add something to the end of the theme URL
         if ($location !== '')
@@ -312,8 +312,8 @@ class MY_Parser extends CI_Parser {
         if ($current_module !== $this->_module)
         {
             $new_locations = array(
-                config_item('theme_path') . $this->_theme_name . '/views/modules/' . $current_module .'/layouts/',
-                config_item('theme_path') . $this->_theme_name . '/views/modules/' . $current_module .'/',
+                config_item('smarty.theme_path') . $this->_theme_name . '/views/modules/' . $current_module .'/layouts/',
+                config_item('smarty.theme_path') . $this->_theme_name . '/views/modules/' . $current_module .'/',
                 APPPATH . 'modules/' . $current_module . '/views/layouts/',
                 APPPATH . 'modules/' . $current_module . '/views/'
             );
@@ -373,10 +373,10 @@ class MY_Parser extends CI_Parser {
     {
         // Store a whole heap of template locations
         $this->_template_locations = array(
-            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/layouts/',
-            config_item('theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/',
-            config_item('theme_path') . $this->_theme_name . '/views/layouts/',
-            config_item('theme_path') . $this->_theme_name . '/views/',
+            config_item('smarty.theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/layouts/',
+            config_item('smarty.theme_path') . $this->_theme_name . '/views/modules/' . $this->_module .'/',
+            config_item('smarty.theme_path') . $this->_theme_name . '/views/layouts/',
+            config_item('smarty.theme_path') . $this->_theme_name . '/views/',
             APPPATH . 'modules/' . $this->_module . '/views/layouts/',
             APPPATH . 'modules/' . $this->_module . '/views/',
             APPPATH . 'views/layouts/',
