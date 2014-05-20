@@ -30,24 +30,24 @@ class CI_Smarty extends Smarty {
         $CI->load->config('smarty');
 
         // Turn on/off debug
-        $this->debugging = config_item('smarty_debug');
+        $this->debugging = config_item('smarty.smarty_debug');
 
         // Set some pretty standard Smarty directories
-        $this->setCompileDir(config_item('compile_directory'));
-        $this->setCacheDir(config_item('cache_directory'));
-        $this->setConfigDir(config_item('config_directory'));
+        $this->setCompileDir(config_item('smarty.compile_directory'));
+        $this->setCacheDir(config_item('smarty.cache_directory'));
+        $this->setConfigDir(config_item('smarty.config_directory'));
 
         // Default template extension
-        $this->template_ext = config_item('template_ext');
+        $this->template_ext = config_item('smarty.template_ext');
 
         // How long to cache templates for
-        $this->cache_lifetime = config_item('cache_lifetime');
+        $this->cache_lifetime = config_item('smarty.cache_lifetime');
 
         // Disable Smarty security policy
         $this->disableSecurity();
 
         // If caching is enabled, then disable force compile and enable cache
-        if (config_item('cache_status') === TRUE)
+        if (config_item('smarty.cache_status') === TRUE)
         {
             $this->enable_caching();
         }
@@ -57,7 +57,7 @@ class CI_Smarty extends Smarty {
         }
 
         // Set the error reporting level
-        $this->error_reporting   = config_item('template_error_reporting');
+        $this->error_reporting   = config_item('smarty.template_error_reporting');
 
         // This will fix various issues like filemtime errors that some people experience
         // The cause of this is most likely setting the error_reporting value above
