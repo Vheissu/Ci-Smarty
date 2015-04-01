@@ -1,15 +1,21 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Turn Smarty debug compatible whith Ci-Smarty parse fetch method
+ * CI Smarty
+ *
+ * Smarty templating for Codeigniter
  *
  * Responsible for sending debug Smarty final output to browser (Smarty_Internal_Debug::display_debug) using debug console (pop-window)
  *(tks for Redn0x - http://www.smarty.net/docs/en/chapter.debugging.console.tpl)
  *
- * @package       CodeIgniter
- * @subpackage    Core
- * @hacked-by     octaaugusto	  
-*/
+ * @package   CI Smarty
+ * @subpackage Core
+ * @author    Dwayne Charrington
+ * @copyright 2015 Dwayne Charrington and Github contributors
+ * @link      http://ilikekillnerds.com
+ * @license   MIT
+ * @version   3.0
+ */
 
 
 class MY_Output extends CI_Output {
@@ -25,7 +31,3 @@ class MY_Output extends CI_Output {
 		}
 	}
 }
-// END MY_Output Class
-
-/* End of file MY_Output.php */
-/* Location: ./application/core/MY_Output.php */
