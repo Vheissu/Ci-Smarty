@@ -1,6 +1,6 @@
 # CI Smarty
 
-CI Smarty integrates Smarty into your Codeigniter applications extending the basic and very limited in-built parser library that comes with the framework. No configuration is really required (unless you want to change something), it works out of the box after dropping the files in and loading them. The in-built Codeigniter parsing library sucks, CI Smarty takes the power and ease of the Smarty templating language and adds easy drop-in support for Codeigniter and even supports HMVC.
+Integrate Smarty into your Codeigniter applications. 
 
 ## In-built theming and Asset Management
 
