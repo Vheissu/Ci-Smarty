@@ -31,6 +31,11 @@ class MY_Parser extends CI_Parser {
         // Codeigniter instance and other required libraries/files
         $this->CI = get_instance();
         $this->CI->load->library('smarty');
+        
+        // 手动触发CI_Smarty 类,不然无法载入配置文件,RadishJ
+        // Manual trigger CI_Smarty, otherwise unable to load the configuration file, RadishJ
+		$this->CI->smarty = new CI_Smarty();
+        
         $this->CI->load->helper('parser');
 
         // Detect if we have a current module
