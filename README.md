@@ -11,7 +11,10 @@ CI Smarty has been tested and working on the latest version of Codeigniter (3.0)
 CI Smarty comes with complimentary functionality to add theming support in your Codeigniter applications. Simply create a themes directory in the root folder of your app and then inside of that folders of themes. If you're not using themes, then don't add anything and CI Smarty will work fine without them. It's a good idea if you're building a web app to have a default theme in application/themes/themename and then allow themes in a different directory to override your default theme files.
 
 ### Asset management
-When dealing with themes you want to include static content like images and stylesheets. By calling; {css('file.css')}, {js('file.js')}, {img('file.jpg')}, etc in your themes files will automatically be embedded. It is assumed your files are in the directories; themename/css, themename/js and themename/images. To get a web friendly URL to your themes directory simply use: {theme_url()} which also supports adding file and folders.
+When dealing with themes you want to include static content like images and stylesheets. By calling; {css('file.css')}, {js('file.js')}, {image('file.jpg')}, etc in your themes files will automatically be embedded. It is assumed your files are in the directories; themename/css, themename/js and themename/img. To get a web friendly URL to your themes directory simply use: {theme_url()} which also supports adding file and folders.
+*** The contents of the above the original wrong, now has been modified ***
+*** 上面内容原来有错，现在已修改 ***
+
 
 ## HMVC/Modules
 This library should work with various HMVC solutions (including Modular Extensions). However, no guarantee is given that CI Smarty will work with other third party libraries.
