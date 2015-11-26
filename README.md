@@ -21,7 +21,9 @@ CI Smarty comes with complimentary functionality to add theming support in your 
 * `{css('file.css')}`
 * `{js('file.js')}`
 * `{image('file.jpg')}`
+
 我发现`image`并不足以满足项目需求，然后我对`image`方法进行了增强，使用方法如下：
+
 `<{image('logo.png',['class' => 'img-circle img-responsive', 'style' => 'height:25px;'])}>`
 
 When dealing with themes you want to include static content like images and stylesheets. By calling; {css('file.css')}, {js('file.js')}, {image('file.jpg')}, etc in your themes files will automatically be embedded. It is assumed your files are in the directories; themename/css, themename/js and themename/img. To get a web friendly URL to your themes directory simply use: {theme_url()} which also supports adding file and folders. !! The contents of the above the original wrong, now has been modified!!
