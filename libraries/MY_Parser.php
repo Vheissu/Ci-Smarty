@@ -31,13 +31,13 @@ class MY_Parser extends CI_Parser {
         // Codeigniter instance and other required libraries/files
         $this->CI = get_instance();
         $this->CI->load->library('smarty');
-        
-        // 手动触发CI_Smarty 类,不然无法载入配置文件,hJ
+
+        // 手动触发CI_Smarty 类,不然无法载入配置文件
         // Manual trigger CI_Smarty, otherwise unable to load the configuration file, RadishJ
-	$this->CI->smarty = new CI_Smarty();
-	// Load the URL module，hJ
+	    $this->CI->smarty = new CI_Smarty();
+	    // Load the URL module
         $this->CI->load->helper('url');
-        
+
         $this->CI->load->helper('parser');
 
         // Detect if we have a current module
@@ -267,7 +267,7 @@ class MY_Parser extends CI_Parser {
 
         $attributes = array_merge($defaults, $attributes);
 
-        $return = '<img src ="'.base_url($this->CI->config->item('smarty.theme_path').$this->get_theme()."/img/".$file).'" alt="'.$attributes['alt'].'" title="'.$attributes['title'].'" />';
+        $return = '<img src ="'.base_url($this->CI->config->item('smarty.theme_path').$this->get_theme()."/img/".$file).'" alt="'.$attributes['alt'].'" title="'.$attributes['title'].'" class="'.$attributes['class'].'" style="'.$attributes['style'].'"/>';
 
         return $return;
     }
