@@ -40,5 +40,6 @@ This library should work with various HMVC solutions (including Modular Extensio
 If you run into any issues, especially the Codeigniter blank screen of death issue there is a simple fix. CI Smarty creates new cache folders in your application/cache directory and needs them to be writable. Issues I've encountered are generally the folders aren't owned by correct user and group doing a: chown www-data:www-data (at least on Ubuntu) on your caching folder will fix the issue.
 
 ## 更新记录
+* 2015/11/27  : 整合Paypal支付至框架中，并提供Demo
 * 2015/11/26  : 整合PHPMailer至框架中(Ci自带邮件组件没有PHPMailer给力)
 * 更早以前    : 框架已整合PHPMailer、Paypal、Vimeo、阿里云OSS等,后续将陆续整理上传

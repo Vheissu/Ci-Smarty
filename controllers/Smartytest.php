@@ -48,4 +48,41 @@ class Smartytest extends CI_Controller {
 
     }
 
+    /**
+     * 支付
+     * @return [type] [description]
+     */
+    public function pay()
+    {
+        $orderNo = '123';
+        $this->load->library('paypal_lib');
+        // paypal生成的支付编码
+        $this->paypal_lib->add_field('hosted_button_id', 'KM2DPM8XXXXXX');
+        // 支付成功返回地址
+        $this->paypal_lib->add_field('return', site_url('pay/success'));
+        // 支付失败返回地址
+        $this->paypal_lib->add_field('cancel_return', site_url('pay/cancel'));
+        // ipn地址
+        $this->paypal_lib->add_field('notify_url', site_url('pay/ipn')); // <-- IPN url
+        // 自定义订单号
+        $this->paypal_lib->add_field('custom', $orderNo);
+        $this->paypal_lib->paypal_auto_form();
+    }
+
+    /**
+     * 验证
+     * @return [type] [description]
+     */
+    function ipn()
+    {
+        $this->load->library('paypal_lib');
+        if ($this->paypal_lib->validate_ipn())
+        {
+            // 获取之前的订单号
+            $orerNo = $this->paypal_lib->ipn_data['custom'];
+            // 更改订单状态,记录日志
+            // ...
+        }
+    }
+
 }
