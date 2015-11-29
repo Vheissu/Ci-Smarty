@@ -85,4 +85,26 @@ class Smartytest extends CI_Controller {
         }
     }
 
+    /**
+     * Vimeo简单使用
+     * @return [type] [description]
+     */
+    function vimeo()
+    {
+        $this->load->library('vimeo_lib');
+        // 通过预置条件，使用API筛选视频
+        $result = $this->vimeo_lib->request('/me/videos',array('per_page'=>$limit, 'page'=>$offset,'filter'=>'embeddable','filter_embeddable'=>'true', 'sort'=>'alphabetical', 'direction'=>'asc'));
+        if($result)
+        {
+            //var_dump($result);
+            $list = array();
+            $list['total'] = $result['body']['total'];
+            $list['data'] = $result['body']['data'];
+            return $list;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
