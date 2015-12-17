@@ -30,8 +30,11 @@ class MY_Parser extends CI_Parser {
     {
         // Codeigniter instance and other required libraries/files
         $this->CI = get_instance();
-        $this->CI->load->library('ci_smarty', NULL, 'smarty');
+        $this->CI->load->library('smarty');
         $this->CI->load->helper('parser');
+        
+        $this->CI->smarty = new CI_Smarty();
+        $this->CI->load->helper('url');
 
         // Detect if we have a current module
         $this->_module = $this->current_module();
