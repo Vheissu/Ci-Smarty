@@ -19,8 +19,7 @@ class CI_Smarty extends Smarty {
 
     public $template_ext = '.php';
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         // Store the Codeigniter super global instance... whatever
@@ -47,12 +46,9 @@ class CI_Smarty extends Smarty {
         $this->disableSecurity();
 
         // If caching is enabled, then disable force compile and enable cache
-        if ( $CI->config->item('smarty.cache_status') === TRUE )
-        {
+        if ( $CI->config->item('smarty.cache_status') === TRUE ) {
             $this->enable_caching();
-        }
-        else
-        {
+        } else {
             $this->disable_caching();
         }
 
@@ -77,8 +73,7 @@ class CI_Smarty extends Smarty {
      * Allows you to enable caching on a page by page basis
      * @example $this->smarty->enable_caching(); then do your parse call
      */
-    public function enable_caching()
-    {
+    public function enable_caching() {
         $this->caching = 1;
     }
 
@@ -88,8 +83,7 @@ class CI_Smarty extends Smarty {
      * Allows you to disable caching on a page by page basis
      * @example $this->smarty->disable_caching(); then do your parse call
      */
-    public function disable_caching()
-    {
+    public function disable_caching() {
         $this->caching = 0;
     }
 
