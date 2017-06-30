@@ -7,7 +7,7 @@
  *
  * @package   CI Smarty
  * @author    Dwayne Charrington
- * @copyright 2015 Dwayne Charrington and Github contributors
+ * @copyright 2017 Dwayne Charrington and Github contributors
  * @link      http://ilikekillnerds.com
  * @license   MIT
  * @version   3.0
