@@ -1,6 +1,10 @@
 # CI Smarty
 Integrate Smarty into your Codeigniter applications.
 
+# Development Notice
+
+I no longer maintain this repository. Please note that many aspects of this repository probably need to be updated.
+
 ## How to use it?
 Drop the contents of the download zip into your application directory, then edit your autoload.php file in the config folder, and add 'parser' to your list of autoloaded libraries. Instead of using $this->load->view() you now use $this->parser->parse() instead. That's it.
 
