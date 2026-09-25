@@ -43,6 +43,8 @@ class SmartyRenderer implements RendererInterface
 
     protected ?string $theme = null;
 
+    protected FileLocatorInterface $locator;
+
     /**
      * Views directories of namespaces that templates were loaded from.
      *
@@ -52,9 +54,10 @@ class SmartyRenderer implements RendererInterface
 
     public function __construct(
         protected SmartyConfig $config,
-        protected ?FileLocatorInterface $locator = null,
+        ?FileLocatorInterface $locator = null,
     ) {
-        $this->smarty = $this->createEngine();
+        $this->locator = $locator ?? service('locator');
+        $this->smarty  = $this->createEngine();
 
         $this->setTheme($config->theme);
     }
@@ -105,19 +108,15 @@ class SmartyRenderer implements RendererInterface
     /**
      * Sets several template variables at once.
      *
-     * @param array<string, mixed> $data
-     * @param string|null          $context Escape the values for this context
-     *                                      ('html', 'js', 'css', 'url', 'attr'
-     *                                      or 'raw') before assigning them.
+     * @param array<string, mixed>                          $data
+     * @param 'attr'|'css'|'html'|'js'|'raw'|'url'|null $context Escape the values for this
+     *                                                          context before assigning them.
      */
     public function setData(array $data = [], ?string $context = null): static
     {
-        if ($context !== null) {
-            $data = esc($data, $context);
+        foreach ($data as $name => $value) {
+            $this->setVar($name, $value, $context);
         }
-
-        $this->tempData ??= $this->data;
-        $this->tempData = array_merge($this->tempData, $data);
 
         return $this;
     }
@@ -125,8 +124,8 @@ class SmartyRenderer implements RendererInterface
     /**
      * Sets a single template variable.
      *
-     * @param mixed       $value
-     * @param string|null $context See setData().
+     * @param mixed                                         $value
+     * @param 'attr'|'css'|'html'|'js'|'raw'|'url'|null $context See setData().
      */
     public function setVar(string $name, $value = null, ?string $context = null): static
     {
@@ -256,6 +255,10 @@ class SmartyRenderer implements RendererInterface
      */
     protected function resolveTemplate(string $view): string
     {
+        if ($view === '') {
+            throw ViewException::forInvalidFile($view);
+        }
+
         // Explicit Smarty resources such as "file:", "string:" or
         // "extends:" are passed through untouched. Two or more letters
         // so Windows drive letters are not mistaken for one.
@@ -284,11 +287,12 @@ class SmartyRenderer implements RendererInterface
      * The namespace's Views directory is added as a template directory,
      * after the others, so the template can extend and include its
      * neighbours and passes the security policy.
+     *
+     * @param non-empty-string $view
      */
     protected function resolveNamespacedTemplate(string $view): string
     {
-        $locator = $this->locator ?? service('locator');
-        $file    = $locator->locateFile($view, 'Views', pathinfo($view, PATHINFO_EXTENSION));
+        $file = $this->locator->locateFile($view, 'Views', pathinfo($view, PATHINFO_EXTENSION));
 
         if ($file === false) {
             throw ViewException::forInvalidFile($view);

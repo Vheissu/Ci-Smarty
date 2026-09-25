@@ -1,0 +1,13 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - tests
+    bootstrapFiles:
+        - tests/_support/phpstan-bootstrap.php
+    tmpDir: build/phpstan
+    codeigniter:
+        additionalConfigNamespaces:
+            - Vheissu\CiSmarty\Config\
+        additionalServices:
+            - Vheissu\CiSmarty\Config\Services

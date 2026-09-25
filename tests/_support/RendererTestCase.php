@@ -40,6 +40,9 @@ abstract class RendererTestCase extends CIUnitTestCase
         }
     }
 
+    /**
+     * @param array<string, mixed> $overrides
+     */
     protected function config(array $overrides = []): SmartyConfig
     {
         $config = new SmartyConfig();
@@ -56,6 +59,9 @@ abstract class RendererTestCase extends CIUnitTestCase
         return $config;
     }
 
+    /**
+     * @param array<string, mixed> $overrides
+     */
     protected function renderer(array $overrides = []): SmartyRenderer
     {
         return new SmartyRenderer($this->config($overrides), service('locator'));

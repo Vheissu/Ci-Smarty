@@ -59,7 +59,7 @@ class CodeIgniterExtension extends Base
             'site_url'   => static fn ($path = ''): string => site_url($path),
             'theme_url'  => fn (string $path = ''): string => $this->renderer->themeUrl($path),
             'route_to'   => static fn (string $route, ...$params): string => (string) route_to($route, ...$params),
-            'lang'       => static fn (string $line, array $args = [], ?string $locale = null): string => (string) lang($line, $args, $locale),
+            'lang'       => static fn (string $line, array $args = [], ?string $locale = null): array|string => lang($line, $args, $locale),
             'csrf_token' => static fn (): string => csrf_token(),
             'csrf_hash'  => static fn (): string => csrf_hash(),
             default      => null,
@@ -74,7 +74,7 @@ class CodeIgniterExtension extends Base
         $href = $this->assetUrl('css', $this->requireFile('css', $params));
         unset($params['file']);
 
-        return '<link' . $this->attributes(['rel' => 'stylesheet', 'href' => $href] + $params) . '>';
+        return '<link' . $this->attributes(['rel' => $params['rel'] ?? 'stylesheet', 'href' => $href] + $params) . '>';
     }
 
     /**
@@ -96,7 +96,7 @@ class CodeIgniterExtension extends Base
         $src = $this->assetUrl('img', $this->requireFile('img', $params));
         unset($params['file']);
 
-        return '<img' . $this->attributes(['src' => $src, 'alt' => ''] + $params) . '>';
+        return '<img' . $this->attributes(['src' => $src, 'alt' => $params['alt'] ?? ''] + $params) . '>';
     }
 
     /**
@@ -162,7 +162,10 @@ class CodeIgniterExtension extends Base
                 $this->cacheable = $cacheable;
             }
 
-            public function handle($params, Template $template)
+            /**
+             * @param array<string, mixed> $params
+             */
+            public function handle($params, Template $template): string
             {
                 return ($this->callback)($params);
             }

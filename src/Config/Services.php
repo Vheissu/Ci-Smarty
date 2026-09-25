@@ -28,8 +28,7 @@ class Services extends BaseService
             return static::getSharedInstance('smarty', $config);
         }
 
-        $config ??= config('Smarty');
-
-        return new SmartyRenderer($config, service('locator'));
+        // The short name lets app/Config/Smarty.php replace the package config.
+        return new SmartyRenderer($config ?? config('Smarty'), service('locator'));
     }
 }
