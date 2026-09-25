@@ -2,7 +2,13 @@
     "name": "vheissu/ci-smarty",
     "description": "Smarty 5 template engine integration for CodeIgniter 4",
     "type": "library",
-    "keywords": ["codeigniter", "codeigniter4", "smarty", "templates", "view"],
+    "keywords": [
+        "codeigniter",
+        "codeigniter4",
+        "smarty",
+        "templates",
+        "view"
+    ],
     "homepage": "https://github.com/Vheissu/Ci-Smarty",
     "license": "MIT",
     "authors": [
@@ -27,7 +33,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\Support\\": "tests/_support/"
         }
     },
     "config": {
