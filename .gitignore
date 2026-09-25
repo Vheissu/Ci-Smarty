@@ -1,0 +1,5 @@
+vendor/
+composer.lock
+.phpunit.cache/
+build/
+tests/_support/writable/
