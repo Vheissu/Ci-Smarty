@@ -255,7 +255,9 @@ class SmartyRenderer implements RendererInterface
      */
     protected function resolveTemplate(string $view): string
     {
-        if ($view === '') {
+        // View names come from code, but refuse to climb out of the
+        // template directories in case one is ever built from user input.
+        if ($view === '' || preg_match('#(\A|[\\\\/])\.\.([\\\\/]|\z)#', $view) === 1) {
             throw ViewException::forInvalidFile($view);
         }
 

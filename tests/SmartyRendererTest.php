@@ -187,6 +187,29 @@ final class SmartyRendererTest extends RendererTestCase
         $this->renderer()->setTheme($theme);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function provideTraversingViewNames(): iterable
+    {
+        yield 'empty' => [''];
+        yield 'relative' => ['../outside/secret'];
+        yield 'nested' => ['partials/../../outside/secret'];
+        yield 'windows' => ['partials\\..\\..\\outside\\secret'];
+        yield 'namespaced' => ['Tests\\Support\\Module\\Views\\..\\..\\outside\\secret'];
+    }
+
+    /**
+     * @dataProvider provideTraversingViewNames
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideTraversingViewNames')]
+    public function testRejectsViewNamesThatLeaveTemplateDirectories(string $view): void
+    {
+        $this->expectException(ViewException::class);
+
+        $this->renderer(['securityPolicy' => null])->render($view);
+    }
+
     public function testRendersNamespacedViews(): void
     {
         $output = $this->renderer()->setVar('name', 'Box')->render('Tests\Support\Module\Views\widget');
