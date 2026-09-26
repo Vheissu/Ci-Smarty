@@ -68,6 +68,13 @@ final class SmartyRendererTest extends RendererTestCase
         $this->assertSame("Hello &lt;i&gt;!\n", $renderer->render('hello'));
     }
 
+    public function testSetDataAcceptsIntegerKeys(): void
+    {
+        $renderer = $this->renderer()->setData(['first', 'second']);
+
+        $this->assertSame(['0' => 'first', '1' => 'second'], $renderer->getData());
+    }
+
     public function testSavedDataIsKeptBetweenRenders(): void
     {
         $renderer = $this->renderer();

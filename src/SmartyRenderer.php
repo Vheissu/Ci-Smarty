@@ -108,14 +108,14 @@ class SmartyRenderer implements RendererInterface
     /**
      * Sets several template variables at once.
      *
-     * @param array<string, mixed>                          $data
+     * @param array<array-key, mixed>                     $data
      * @param 'attr'|'css'|'html'|'js'|'raw'|'url'|null $context Escape the values for this
-     *                                                          context before assigning them.
+     *                                                      context before assigning them.
      */
     public function setData(array $data = [], ?string $context = null): static
     {
         foreach ($data as $name => $value) {
-            $this->setVar($name, $value, $context);
+            $this->setVar((string) $name, $value, $context);
         }
 
         return $this;
@@ -124,7 +124,7 @@ class SmartyRenderer implements RendererInterface
     /**
      * Sets a single template variable.
      *
-     * @param mixed                                         $value
+     * @param mixed                                     $value
      * @param 'attr'|'css'|'html'|'js'|'raw'|'url'|null $context See setData().
      */
     public function setVar(string $name, $value = null, ?string $context = null): static
