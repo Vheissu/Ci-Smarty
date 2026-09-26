@@ -142,9 +142,30 @@ final class CodeIgniterExtensionTest extends RendererTestCase
         $this->assertSame(csrf_field('token'), $this->render('{csrf_field id="token"}'));
     }
 
+    public function testCsrfFieldIsNotCached(): void
+    {
+        $renderer = $this->renderer();
+        $options  = ['cache' => 60, 'cache_name' => 'csrf'];
+
+        $first = $renderer->setVar('name', 'First')->render('cached', $options);
+        $this->assertSame('First|' . csrf_field() . "\n", $first);
+
+        // A new security service generates a new token.
+        $this->resetServices();
+        service('routes')->loadRoutes();
+        $this->assertStringNotContainsString(csrf_hash(), $first);
+
+        $second = $renderer->setVar('name', 'Second')->render('cached', $options);
+        $this->assertSame('First|' . csrf_field() . "\n", $second);
+    }
+
     public function testRouteTo(): void
     {
-        $this->assertSame('/', $this->render("{route_to('Home::index')}"));
+        service('routes')->get('posts', 'Posts::index', ['as' => 'posts']);
+        service('routes')->get('posts/(:num)', 'Posts::show/$1', ['as' => 'post']);
+
+        $this->assertSame('/posts', $this->render("{route_to('posts')}"));
+        $this->assertSame('/posts/7', $this->render("{route_to('post', \$id)}", ['id' => 7]));
     }
 
     public function testLang(): void

@@ -1,0 +1,1 @@
+{$name}|{csrf_field}
